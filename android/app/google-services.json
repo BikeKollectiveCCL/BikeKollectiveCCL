@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "682911986853",
+    "project_id": "bikekollective-e87b3",
+    "storage_bucket": "bikekollective-e87b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682911986853:android:1670c2e40eb6b6f0a3c94c",
+        "android_client_info": {
+          "package_name": "com.oregonstate.ccl.bikekollective"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682911986853-lhn0d2leh95ib9ci41mahcaf5jdhlppf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_J7toZO7DwtL17GgmFDddWMAB7xPUIfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682911986853-lhn0d2leh95ib9ci41mahcaf5jdhlppf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
