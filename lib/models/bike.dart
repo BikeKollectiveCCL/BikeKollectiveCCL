@@ -2,7 +2,7 @@ class Bike {
   String bikeName;
   double latitude;
   double longitude;
-  double averageRating;
+  num averageRating;
   String bikeType;
   String bikeDescription;
   String lockCombination;
