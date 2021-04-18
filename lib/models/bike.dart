@@ -12,13 +12,13 @@ class Bike {
   // List bikeIssues;
 
   Bike.fromMap(Map bikeMap) {
-    this.bikeName = bikeMap['name'];
+    this.bikeName = bikeMap['description'];
     this.latitude = bikeMap['location'].latitude;
     this.longitude = bikeMap['location'].longitude;
-    this.averageRating = bikeMap['avgRating'];
+    this.averageRating = bikeMap['rating'];
     this.bikeType = bikeMap['type'];
     this.bikeDescription = bikeMap['description'];
     this.lockCombination = bikeMap['combination'];
-    this.isCheckedOut = bikeMap['isCheckedOut'];
+    this.isCheckedOut = bikeMap['checked_out'];
   }
 }

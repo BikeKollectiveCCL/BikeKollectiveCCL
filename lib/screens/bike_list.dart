@@ -30,7 +30,7 @@ class _BikeListState extends State<BikeList> {
     return StreamBuilder(
         stream: Firestore.instance
             .collection('bikes')
-            .orderBy('avgRating', descending: true)
+            .orderBy('rating', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData &&
