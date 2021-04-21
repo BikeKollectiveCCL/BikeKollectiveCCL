@@ -8,7 +8,7 @@
     cd BikeKollectiveCCL
     flutter pub get
     ```
-3. Append MAPS_API_KEY to android/local.properties. If local.properties
+3. Append MAPS_API_KEY to android/local.properties
     ```
     MAPS_API_KEY=<key_goes_here>
     ```
