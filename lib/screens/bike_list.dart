@@ -49,7 +49,7 @@ class _BikeListState extends State<BikeList> {
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-    final thisBike = Bike.fromMap(document.data);
+    final thisBike = Bike.fromMap(document.data, document.reference.documentID);
     return Semantics(
         button: true,
         onTapHint: 'view bike',

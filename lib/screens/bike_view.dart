@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/bike.dart';
+import 'checkout_bike.dart';
+import 'single_bike_map.dart';
 
 class BikeView extends StatelessWidget {
+  // TODO: Should the bike be re-loaded from Firestore in case its state has changed since the list was loaded?
   static const routeName = 'viewBike';
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,20 @@ class BikeView extends StatelessWidget {
             if (thisBike.isCheckedOut) Text('currently checked out'),
             if (!thisBike.isCheckedOut) Text('this bike is available'),
             Text(thisBike.bikeDescription),
-            Text('Map or map link'),
-            if (!thisBike.isCheckedOut) Text('Checkout button'),
             Text('Report an issue button'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(SingleBikeMap.routeName, arguments: thisBike);
+                },
+                child: Text('View bike on map')),
+            if (!thisBike.isCheckedOut)
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(CheckoutBike.routeName, arguments: thisBike);
+                  },
+                  child: Text('Check out bike'))
           ],
         )));
   }

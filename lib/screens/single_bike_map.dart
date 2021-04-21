@@ -16,7 +16,6 @@ class _SingleBikeMap extends State<SingleBikeMap> {
           title: Text('${thisBike.bikeName}'),
           backgroundColor: Colors.green[700],
         ),
-        drawer: navDrawer(context),
         body: Column(
           children: [Text('Bike Map placeholder')],
         ));

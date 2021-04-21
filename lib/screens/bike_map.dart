@@ -31,7 +31,7 @@ class _BikeMapState extends State<BikeMap> {
       // create the markers (for the bikes)
       _markers.clear();
       for (final bike in allBikes) {
-        final bikeObj = Bike.fromMap(bike.data);
+        final bikeObj = Bike.fromMap(bike.data, bike.reference.documentID);
         final bikeMarker = Marker(
           markerId: MarkerId(bikeObj.bikeDescription),
           position: LatLng(bikeObj.latitude, bikeObj.longitude),

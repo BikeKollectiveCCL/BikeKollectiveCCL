@@ -5,6 +5,7 @@ import 'screens/add_bike.dart';
 import 'screens/return_bike.dart';
 import 'screens/single_bike_map.dart';
 import 'screens/bike_view.dart';
+import 'screens/checkout_bike.dart';
 
 class BikeKollective extends StatefulWidget {
   @override
@@ -19,7 +20,8 @@ class _BikeKollectiveState extends State<BikeKollective> {
     BikeList.routeName: (context) => BikeList(),
     AddBike.routeName: (context) => AddBike(),
     ReturnBike.routeName: (context) => ReturnBike(),
-    SingleBikeMap.routeName: (context) => SingleBikeMap()
+    SingleBikeMap.routeName: (context) => SingleBikeMap(),
+    CheckoutBike.routeName: (context) => CheckoutBike()
   };
 
   @override
