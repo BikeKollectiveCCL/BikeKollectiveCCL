@@ -28,18 +28,18 @@ class _BikeListState extends State<BikeList> {
 
   StreamBuilder bikeList() {
     return StreamBuilder(
-        stream: Firestore.instance
+        stream: FirebaseFirestore.instance
             .collection('bikes')
             .orderBy('rating', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData &&
-              snapshot.data.documents != null &&
-              snapshot.data.documents.length > 0) {
+              snapshot.data.docs != null &&
+              snapshot.data.docs.length > 0) {
             return ListView.builder(
-              itemCount: snapshot.data.documents.length,
+              itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) =>
-                  _buildListItem(context, snapshot.data.documents[index]),
+                  _buildListItem(context, snapshot.data.docs[index]),
             );
           } else {
             print(snapshot);
@@ -49,7 +49,7 @@ class _BikeListState extends State<BikeList> {
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-    final thisBike = Bike.fromMap(document.data, document.reference.documentID);
+    final thisBike = Bike.fromMap(document.data(), document.reference.id);
     return Semantics(
         button: true,
         onTapHint: 'view bike',

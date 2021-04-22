@@ -6,10 +6,10 @@ import '../models/bike.dart';
 void updateBike(Bike thisBike) async {
   // TODO: how to catch and handle race conditions where the bike is already checked out?
   print('updating a bike');
-  CollectionReference bikes = Firestore.instance.collection('bikes');
+  CollectionReference bikes = FirebaseFirestore.instance.collection('bikes');
   return bikes
-      .document(thisBike.bikeID)
-      .updateData({'checked_out': true})
+      .doc(thisBike.bikeID)
+      .update({'checked_out': true})
       .then((value) => print('Bike updated'))
       .catchError((error) => print('Failed to update bike: $error'));
 }
