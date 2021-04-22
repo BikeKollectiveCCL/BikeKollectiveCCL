@@ -23,9 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_auth: ^1.1.1         #1.1.1 available
-  cloud_firestore: ^1.0.6      #1.0.6 available
-  firebase_storage: ^8.0.4        #8.0.4 available
+  firebase_auth: ^1.1.1
+  cloud_firestore: ^1.0.6
+  firebase_storage: ^8.0.4
   google_maps_flutter: ^2.0.1
   location: ^4.1.1
 
