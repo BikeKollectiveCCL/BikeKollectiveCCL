@@ -8,6 +8,10 @@
     cd BikeKollectiveCCL
     flutter pub get
     ```
+3. Append MAPS_API_KEY to android/local.properties
+    ```
+    MAPS_API_KEY=<key_goes_here>
+    ```
 
 ## Debugging in VS Code
 1. Start device of choice (ex. Pixel 3a x86)
@@ -25,7 +29,7 @@
         ]
     }
     ```
-3. Launch BikeKollectiveCCL
+3. Launch BikeKollectiveCCL (alternatively, call "flutter run" from terminal)
 
 ## VS Code settings
 TBD (Linting, suggestions, extensions, workspace settings)
