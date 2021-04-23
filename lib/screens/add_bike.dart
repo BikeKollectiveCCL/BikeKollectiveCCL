@@ -7,6 +7,10 @@ import 'dart:io';
 import 'dart:async';
 import 'package:location/location.dart';
 import '../models/bikeDTO.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../screens/sign_in.dart';
+
 
 class AddBike extends StatefulWidget {
   static const routeName = 'addBike';
@@ -24,6 +28,8 @@ class _AddBikeState extends State<AddBike> {
 
   @override
   Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User>();
+    if (firebaseUser != null) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Add Bike'),
@@ -32,6 +38,10 @@ class _AddBikeState extends State<AddBike> {
         child: imageFile == null? (buildColumn()): enableUpload(),
       ),
     );
+    }
+    else {
+      return SignIn();
+    }
   }
 
   Column buildColumn() {
