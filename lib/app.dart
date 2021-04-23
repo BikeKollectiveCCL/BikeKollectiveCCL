@@ -1,4 +1,4 @@
-import 'package:bikekollective/screens/sign_in_page.dart';
+import 'package:bikekollective/screens/sign_in.dart';
 import 'package:bikekollective/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +9,8 @@ import 'screens/add_bike.dart';
 import 'screens/return_bike.dart';
 import 'screens/single_bike_map.dart';
 import 'screens/bike_view.dart';
-import 'screens/sign_in_page.dart';
+import 'screens/sign_in.dart';
+import 'screens/sign_up.dart';
 import 'wrappers/authentication_wrapper.dart';
 
 class BikeKollective extends StatefulWidget {
@@ -20,14 +21,14 @@ class BikeKollective extends StatefulWidget {
 class _BikeKollectiveState extends State<BikeKollective> {
   // static final routes = {BikeList.routeName: (context) => BikeList()};
   static final routes = {
-    // put root screen inside AuthenticationWrapper
-    //BikeMap.routeName: (context) => BikeMap(),
+    BikeMap.routeName: (context) => BikeMap(),
     BikeView.routeName: (context) => BikeView(),
     BikeList.routeName: (context) => BikeList(),
     AddBike.routeName: (context) => AddBike(),
     ReturnBike.routeName: (context) => ReturnBike(),
     SingleBikeMap.routeName: (context) => SingleBikeMap(),
-    SignInPage.routeName: (context) => SignInPage()
+    SignIn.routeName: (context) => SignIn(),
+    SignUp.routeName: (context) => SignUp()
   };
 
   @override
@@ -46,7 +47,6 @@ class _BikeKollectiveState extends State<BikeKollective> {
           title: 'Bike Kollective',
           debugShowCheckedModeBanner: false,
           routes: routes,
-          home: AuthenticationWrapper(),
         ));
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/bike_map.dart';
-import '../screens/sign_in_page.dart';
+import '../screens/sign_in.dart';
 
 class AuthenticationWrapper extends StatelessWidget {
   const AuthenticationWrapper({
@@ -17,6 +17,6 @@ class AuthenticationWrapper extends StatelessWidget {
       return BikeMap();
     }
     // User is not signed in
-    return SignInPage();
+    return SignIn();
   }
 }
