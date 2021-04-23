@@ -30,6 +30,11 @@
     }
     ```
 3. Launch BikeKollectiveCCL (alternatively, call "flutter run" from terminal)
+4. For app login credentials, use same credentials as gmail
 
 ## VS Code settings
 TBD (Linting, suggestions, extensions, workspace settings)
+
+## Important links
+1. See authenticated users [here](https://console.firebase.google.com/project/bikekollective-e87b3/authentication/users)
+2. Enable Maps API [here](https://console.cloud.google.com/google/maps-apis/overview?authuser=0&folder=&organizationId=&project=bikekollective-e87b3) and get MAPS_API_KEY if needed
