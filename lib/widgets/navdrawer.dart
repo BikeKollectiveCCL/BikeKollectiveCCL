@@ -1,9 +1,13 @@
+import 'package:provider/provider.dart';
+import 'package:bikekollective/screens/sign_in_page.dart';
+import 'package:bikekollective/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../screens/bike_list.dart';
 import '../screens/bike_map.dart';
 import '../screens/add_bike.dart';
 import '../screens/return_bike.dart';
+import '../screens/sign_in_page.dart';
 
 Widget navDrawer(BuildContext context) {
   return Drawer(
@@ -30,6 +34,12 @@ Widget navDrawer(BuildContext context) {
         title: Text('Return Bike'),
         onTap: () {
           Navigator.of(context).pushNamed(ReturnBike.routeName);
+        }),
+    ListTile(
+        title: Text('Sign Out'),
+        onTap: () {
+          context.read<AuthenticationService>().signOut();
+          Navigator.of(context).pushNamed(SignInPage.routeName);
         }),
   ]));
 }
