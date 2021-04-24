@@ -9,6 +9,7 @@ import 'screens/add_bike.dart';
 import 'screens/return_bike.dart';
 import 'screens/single_bike_map.dart';
 import 'screens/bike_view.dart';
+import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
 import 'wrappers/authentication_wrapper.dart';
@@ -27,6 +28,7 @@ class _BikeKollectiveState extends State<BikeKollective> {
     AddBike.routeName: (context) => AddBike(),
     ReturnBike.routeName: (context) => ReturnBike(),
     SingleBikeMap.routeName: (context) => SingleBikeMap(),
+    CheckoutBike.routeName: (context) => CheckoutBike()
     SignIn.routeName: (context) => SignIn(),
     SignUp.routeName: (context) => SignUp()
   };
