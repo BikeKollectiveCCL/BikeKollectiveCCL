@@ -13,6 +13,7 @@ import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
 import 'wrappers/authentication_wrapper.dart';
+import 'models/ride.dart';
 
 class BikeKollective extends StatefulWidget {
   @override
@@ -39,6 +40,9 @@ class _BikeKollectiveState extends State<BikeKollective> {
         providers: [
           Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance),
+          ),
+          ListenableProvider<Ride>(
+            create: (context) => Ride(),
           ),
           StreamProvider(
               initialData: null,
