@@ -28,7 +28,7 @@ class _BikeKollectiveState extends State<BikeKollective> {
     AddBike.routeName: (context) => AddBike(),
     ReturnBike.routeName: (context) => ReturnBike(),
     SingleBikeMap.routeName: (context) => SingleBikeMap(),
-    CheckoutBike.routeName: (context) => CheckoutBike()
+    CheckoutBike.routeName: (context) => CheckoutBike(),
     SignIn.routeName: (context) => SignIn(),
     SignUp.routeName: (context) => SignUp()
   };

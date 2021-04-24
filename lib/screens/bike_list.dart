@@ -63,7 +63,8 @@ class _BikeListState extends State<BikeList> {
         button: true,
         onTapHint: 'view bike',
         child: ListTile(
-          leading: Image.network(thisBike.url,  height: 50,width: 70,fit: BoxFit.fill),
+          leading: Image.network(thisBike.url,
+              height: 50, width: 70, fit: BoxFit.fill),
           title: Text('Bike ${thisBike.bikeName}'),
           subtitle: Text('${thisBike.bikeDescription}'),
           onTap: () {
