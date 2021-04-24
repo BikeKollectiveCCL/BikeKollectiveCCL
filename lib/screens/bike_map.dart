@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/bike_view.dart';
 import '../models/bike.dart';
 import '../widgets/navdrawer.dart';
 import '../services/get_location.dart';
+import '../screens/sign_in.dart';
 
 class BikeMap extends StatefulWidget {
   static const routeName = '/';
@@ -59,20 +62,25 @@ class _BikeMapState extends State<BikeMap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bike Map'),
-        backgroundColor: Colors.green[700],
-      ),
-      drawer: navDrawer(context),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(0.0, 0.0),
-          zoom: 2,
+    final firebaseUser = context.watch<User>();
+    if (firebaseUser != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Bike Map'),
+          backgroundColor: Colors.green[700],
         ),
-        markers: _markers.values.toSet(),
-      ),
-    );
+        drawer: navDrawer(context),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(0.0, 0.0),
+            zoom: 2,
+          ),
+          markers: _markers.values.toSet(),
+        ),
+      );
+    } else {
+      return SignIn();
+    }
   }
 }

@@ -8,6 +8,7 @@ class Bike {
   String lockCombination;
   bool isCheckedOut;
   var bikeID;
+  String url;
   // List bikeTags;
   // List bikeImages;
   // List bikeIssues;
@@ -22,5 +23,6 @@ class Bike {
     this.lockCombination = bikeMap['combination'];
     this.isCheckedOut = bikeMap['checked_out'];
     this.bikeID = bikeDocID;
+    this.url = bikeMap['url'];
   }
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/bike.dart';
 import '../screens/bike_view.dart';
 import '../widgets/navdrawer.dart';
+import '../screens/sign_in.dart';
+
 // import '../screens/single_bike_map.dart';
 
 class BikeList extends StatefulWidget {
@@ -19,11 +23,16 @@ class _BikeListState extends State<BikeList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Bike Kollective')),
-      body: bikeList(),
-      drawer: navDrawer(context),
-    );
+    final firebaseUser = context.watch<User>();
+    if (firebaseUser != null) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Bike Kollective')),
+        body: bikeList(),
+        drawer: navDrawer(context),
+      );
+    } else {
+      return SignIn();
+    }
   }
 
   StreamBuilder bikeList() {
@@ -54,6 +63,7 @@ class _BikeListState extends State<BikeList> {
         button: true,
         onTapHint: 'view bike',
         child: ListTile(
+          leading: Image.network(thisBike.url,  height: 50,width: 70,fit: BoxFit.fill),
           title: Text('Bike ${thisBike.bikeName}'),
           subtitle: Text('${thisBike.bikeDescription}'),
           onTap: () {
