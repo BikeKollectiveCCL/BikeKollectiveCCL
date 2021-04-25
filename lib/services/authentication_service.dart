@@ -18,7 +18,7 @@ class AuthenticationService {
 
       // if emeail account has not been verified
       if (!_firebaseAuth.currentUser.emailVerified) {
-        await _firebaseAuth.currentUser.sendEmailVerification();
+        var key = await _firebaseAuth.currentUser.sendEmailVerification();
         await _firebaseAuth.signOut();
         return formatMsg(
             false, "Please verify email. Verification email re-sent.");
@@ -30,6 +30,8 @@ class AuthenticationService {
         return formatMsg(false, 'No user found for that email.');
       } else if (e.code == 'wrong-password') {
         return formatMsg(false, 'Wrong password provided for that user.');
+      } else if (e.code == 'too-many-requests') {
+        return formatMsg(false, 'Email previously sent.');
       }
     } catch (e) {
       // something has gone terribly wrong
