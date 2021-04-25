@@ -15,6 +15,14 @@ class AuthenticationService {
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
+
+      // if emeail account has not been verified
+      if (!_firebaseAuth.currentUser.emailVerified) {
+        var key = await _firebaseAuth.currentUser.sendEmailVerification();
+        await _firebaseAuth.signOut();
+        return formatMsg(
+            false, "Please verify email. Verification email re-sent.");
+      }
       print("Successfuly signed in");
       return formatMsg(true, "Successfuly signed in");
     } on FirebaseAuthException catch (e) {
@@ -22,6 +30,8 @@ class AuthenticationService {
         return formatMsg(false, 'No user found for that email.');
       } else if (e.code == 'wrong-password') {
         return formatMsg(false, 'Wrong password provided for that user.');
+      } else if (e.code == 'too-many-requests') {
+        return formatMsg(false, 'Email previously sent.');
       }
     } catch (e) {
       // something has gone terribly wrong
@@ -35,6 +45,9 @@ class AuthenticationService {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      //await user.sendEmailVerification();
+      await _firebaseAuth.currentUser.sendEmailVerification();
+      await _firebaseAuth.signOut();
       return formatMsg(true, "Please check your email to verify.");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
