@@ -49,6 +49,7 @@ void updateRide(Ride thisRide) async {
   FirebaseFirestore.instance.collection('rides').doc(thisRide.docID).update({
     'return_time': Timestamp.fromDate(thisRide.returnTime),
     'return_location': GeoPoint(
-        thisRide.returnLocation.latitude, thisRide.returnLocation.longitude)
+        thisRide.returnLocation.latitude, thisRide.returnLocation.longitude),
+    'rating': thisRide.rating
   });
 }

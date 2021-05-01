@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,7 @@ class ReturnBike extends StatefulWidget {
 }
 
 class _ReturnBikeState extends State<ReturnBike> {
+  final formKey = GlobalKey<FormState>();
   // TODO: Show a "loading" icon while waiting for the return to complete
   LocationData locationData;
   @override
@@ -30,18 +32,33 @@ class _ReturnBikeState extends State<ReturnBike> {
           body: Center(
               child: Column(children: [
             Text('Return bike placeholder'),
-            if (bikeToReturn != null) Text('${bikeToReturn.bikeName}'),
-            if (bikeToReturn != null)
-              ElevatedButton(
-                  onPressed: () async {
-                    locationData = await getLocation();
-                    currentRide.returnLocation = locationData;
-                    currentRide.returnTime = DateTime.now();
-                    rideState.returnBike();
-                    updateBikeReturn(bikeToReturn);
-                    updateRide(currentRide);
-                  },
-                  child: Text('Confirm return'))
+            Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    if (bikeToReturn != null) Text('${bikeToReturn.bikeName}'),
+                    RatingBar(
+                        allowHalfRating: true,
+                        ratingWidget: RatingWidget(
+                            full: Icon(Icons.star),
+                            half: Icon(Icons.star_half),
+                            empty: Icon(Icons.star_border)),
+                        onRatingUpdate: (rating) {
+                          currentRide.rating = rating;
+                        }),
+                    ElevatedButton(
+                        onPressed: () async {
+                          locationData = await getLocation();
+                          currentRide.returnLocation = locationData;
+                          currentRide.returnTime = DateTime.now();
+                          rideState.returnBike();
+                          updateBikeReturn(bikeToReturn);
+                          updateRide(currentRide);
+                          Navigator.pop(context);
+                        },
+                        child: Text('Confirm return'))
+                  ],
+                )),
           ])));
     } else {
       return SignIn();

@@ -2,7 +2,7 @@ class Bike {
   String bikeName;
   double latitude;
   double longitude;
-  num averageRating;
+  double averageRating;
   String bikeType;
   String bikeDescription;
   String lockCombination;
@@ -17,7 +17,11 @@ class Bike {
     this.bikeName = bikeMap['description'];
     this.latitude = bikeMap['location'].latitude;
     this.longitude = bikeMap['location'].longitude;
-    this.averageRating = bikeMap['rating'];
+    if (bikeMap['rating'] == null) {
+      this.averageRating = null;
+    } else {
+      this.averageRating = bikeMap['rating'] + 0.0;
+    }
     this.bikeType = bikeMap['type'];
     this.bikeDescription = bikeMap['description'];
     this.lockCombination = bikeMap['combination'];
