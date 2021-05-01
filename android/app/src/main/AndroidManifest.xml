@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.oregonstate.ccl.bikekollective">
-   <application
+    <application
         android:label="bikekollective"
         android:icon="@mipmap/ic_launcher">
         <meta-data
