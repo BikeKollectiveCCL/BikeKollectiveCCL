@@ -9,14 +9,14 @@ class BikeDTO {
   String type;
   String url;
 
-  BikeDTO({
-    this.checked_out = false, 
-    this.description, 
-    this.location, 
-    this.lock_combination,
-    this.rating,
-    this.type,
-    this.url});
+  BikeDTO(
+      {this.checked_out = false,
+      this.description,
+      this.location,
+      this.lock_combination,
+      this.rating,
+      this.type,
+      this.url});
 
   void upload() {
     FirebaseFirestore.instance.collection('bikes').add({
@@ -25,8 +25,9 @@ class BikeDTO {
       'location': this.location,
       'lock_combination': this.lock_combination,
       'rating': this.rating,
-      'type':this.type,
-      'url':this.url
+      'type': this.type,
+      'url': this.url,
+      'count_ratings': 0
     });
   }
 }

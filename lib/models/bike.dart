@@ -3,6 +3,7 @@ class Bike {
   double latitude;
   double longitude;
   double averageRating;
+  int countRatings;
   String bikeType;
   String bikeDescription;
   String lockCombination;
@@ -28,5 +29,6 @@ class Bike {
     this.isCheckedOut = bikeMap['checked_out'];
     this.bikeID = bikeDocID;
     this.url = bikeMap['url'];
+    this.countRatings = bikeMap['count_ratings'];
   }
 }

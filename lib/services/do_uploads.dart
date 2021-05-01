@@ -16,13 +16,25 @@ void updateBikeCheckout(Bike thisBike) async {
       .catchError((error) => print('Failed to update bike: $error'));
 }
 
-void updateBikeReturn(Bike thisBike) async {
+void updateBikeReturn(Bike thisBike, double rating) async {
+  double newAvg;
+  if (thisBike.averageRating == null) {
+    newAvg = rating;
+  } else {
+    newAvg = ((thisBike.averageRating * thisBike.countRatings) + rating) /
+        (thisBike.countRatings + 1);
+  }
+
   // tell Firestore that the bike is no longer checked out
   print('updating a bike');
   CollectionReference bikes = FirebaseFirestore.instance.collection('bikes');
   return bikes
       .doc(thisBike.bikeID)
-      .update({'checked_out': false})
+      .update({
+        'checked_out': false,
+        'count_ratings': thisBike.countRatings + 1,
+        'rating': newAvg
+      })
       .then((value) => print('Bike updated'))
       .catchError((error) => print('Failed to update bike: $error'));
 }

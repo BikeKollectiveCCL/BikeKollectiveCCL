@@ -52,7 +52,7 @@ class _ReturnBikeState extends State<ReturnBike> {
                           currentRide.returnLocation = locationData;
                           currentRide.returnTime = DateTime.now();
                           rideState.returnBike();
-                          updateBikeReturn(bikeToReturn);
+                          updateBikeReturn(bikeToReturn, currentRide.rating);
                           updateRide(currentRide);
                           Navigator.pop(context);
                         },
