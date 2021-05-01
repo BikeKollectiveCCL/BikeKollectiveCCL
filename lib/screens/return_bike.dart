@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/currentRideState.dart';
 import '../models/ride.dart';
 import '../screens/sign_in.dart';
 import '../services/get_location.dart';
@@ -20,8 +21,9 @@ class _ReturnBikeState extends State<ReturnBike> {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
-    var ride = context.read<Ride>();
-    final bikeToReturn = ride.getCheckedOutBike();
+    var rideState = context.read<CurrentRideState>();
+    final Ride currentRide = rideState.currentRide;
+    final bikeToReturn = rideState.getCheckedOutBike();
     if (firebaseUser != null) {
       return Scaffold(
           appBar: AppBar(title: Text('Return bike')),
@@ -33,8 +35,11 @@ class _ReturnBikeState extends State<ReturnBike> {
               ElevatedButton(
                   onPressed: () async {
                     locationData = await getLocation();
-                    ride.returnBike();
+                    currentRide.returnLocation = locationData;
+                    currentRide.returnTime = DateTime.now();
+                    rideState.returnBike();
                     updateBikeReturn(bikeToReturn);
+                    updateRide(currentRide);
                   },
                   child: Text('Confirm return'))
           ])));

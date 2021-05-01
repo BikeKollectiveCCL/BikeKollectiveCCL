@@ -8,10 +8,10 @@ import '../screens/bike_map.dart';
 import '../screens/add_bike.dart';
 import '../screens/return_bike.dart';
 import '../screens/sign_in.dart';
-import '../models/ride.dart';
+import '../models/currentRideState.dart';
 
 Widget navDrawer(BuildContext context) {
-  return Consumer<Ride>(
+  return Consumer<CurrentRideState>(
       builder: (context, ride, child) => Drawer(
               child: ListView(
             children: <Widget>[

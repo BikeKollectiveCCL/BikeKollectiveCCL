@@ -1,28 +1,36 @@
-import 'package:flutter/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:location/location.dart';
+
 import 'bike.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Ride extends ChangeNotifier {
-  Bike _checkedOutBike = null;
+class Ride {
+  Bike bike;
+  User user;
+  LocationData checkoutLocation;
+  LocationData returnLocation;
+  DateTime checkoutTime;
+  DateTime returnTime;
+  var docID;
 
-  void checkOutBike(Bike someBike) {
-    _checkedOutBike = someBike;
-    notifyListeners();
+  Ride(
+    Bike aBike,
+    User aUser,
+    LocationData coLocation,
+    DateTime coTime,
+  ) {
+    this.bike = aBike;
+    this.user = aUser;
+    this.checkoutLocation = coLocation;
+    this.checkoutTime = coTime;
   }
 
-  Bike getCheckedOutBike() {
-    return _checkedOutBike;
-  }
-
-  void returnBike() {
-    _checkedOutBike = null;
-    notifyListeners();
-  }
-
-  bool onRide() {
-    if (_checkedOutBike != null) {
-      return true;
-    } else {
-      return false;
-    }
+  void printMe() {
+    print('Bike: ${this.bike.bikeDescription}');
+    print('User: ${this.user.email}');
+    print('Checkout location: ${this.checkoutLocation}');
+    print('Return location: ${this.returnLocation}');
+    print('Checkout time: ${this.checkoutTime}');
+    print('Return time: ${this.returnTime}');
   }
 }
