@@ -1,3 +1,5 @@
+import 'package:bikekollective/screens/accident_waiver.dart';
+import 'package:bikekollective/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/bike_view.dart';
 import '../models/bike.dart';
+import '../models/app_user.dart';
 import '../widgets/navdrawer.dart';
 import '../services/get_location.dart';
 import '../screens/sign_in.dart';
@@ -63,22 +66,37 @@ class _BikeMapState extends State<BikeMap> {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
+    final appUsersSnapshots = context.watch<QuerySnapshot>();
+    final currUser = context.watch<AppUser>();
+
+    if (firebaseUser != null &&
+        appUsersSnapshots != null &&
+        appUsersSnapshots.docs != null &&
+        appUsersSnapshots.docs.length > 0) {
+      currUser.setAuthId = firebaseUser.uid;
+      currUser.loadInfo(appUsersSnapshots.docs);
+    }
+
     if (firebaseUser != null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Bike Map'),
-          backgroundColor: Colors.green[700],
-        ),
-        drawer: navDrawer(context),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(0.0, 0.0),
-            zoom: 2,
+      if (currUser.hasSignedWaiver) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Bike Map'),
+            backgroundColor: Colors.green[700],
           ),
-          markers: _markers.values.toSet(),
-        ),
-      );
+          drawer: navDrawer(context),
+          body: GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(0.0, 0.0),
+              zoom: 2,
+            ),
+            markers: _markers.values.toSet(),
+          ),
+        );
+      } else {
+        return AccidentWaiver();
+      }
     } else {
       return SignIn();
     }
