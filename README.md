@@ -1,5 +1,10 @@
 # BikeKollectiveCCL | CS467 - Online Capstone Project
 
+## Pre-reqs
+1. Install flutter, and set up Android emulator. See [here](https://flutter.dev/docs/get-started/install). Use relatively newer version (~2.0.0 >) of Flutter
+2. (Optional) Install VSCode. See [here](https://code.visualstudio.com/)
+
+
 ## Setting up local environment
 1. Fork main [BikeKollectiveCCL](github.com/BikeKollectiveCCL/BikeKollectiveCCL) repo by clicking the fork button in the upper right hand corner of a repo page
 2. Go into your desired local working folder (ex. ~, C:\Users\username), open terminal and run the following commands:
@@ -38,3 +43,4 @@ TBD (Linting, suggestions, extensions, workspace settings)
 ## Important links
 1. See authenticated users [here](https://console.firebase.google.com/project/bikekollective-e87b3/authentication/users)
 2. Enable Maps API [here](https://console.cloud.google.com/google/maps-apis/overview?authuser=0&folder=&organizationId=&project=bikekollective-e87b3) and get MAPS_API_KEY if needed
+3. Helpful [Firebase Authentication](https://firebase.flutter.dev/docs/auth/usage/) and [Cloud Firestore](https://firebase.flutter.dev/docs/firestore/usage/) links

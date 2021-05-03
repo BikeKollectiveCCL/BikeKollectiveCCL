@@ -1,3 +1,6 @@
+import 'package:bikekollective/models/app_user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:bikekollective/screens/sign_in.dart';
 import 'package:bikekollective/services/authentication_service.dart';
@@ -9,6 +12,7 @@ import '../screens/add_bike.dart';
 import '../screens/return_bike.dart';
 import '../screens/sign_in.dart';
 import '../models/currentRideState.dart';
+import '../services/firebase_service.dart';
 
 Widget navDrawer(BuildContext context) {
   return Consumer<CurrentRideState>(
@@ -41,6 +45,12 @@ Widget navDrawer(BuildContext context) {
               ListTile(
                   title: Text('Sign Out'),
                   onTap: () {
+                    final firebaseInstance =
+                        FirebaseService(FirebaseFirestore.instance);
+                    AppUser currUser =
+                        Provider.of<AppUser>(context, listen: false);
+                    firebaseInstance.updateAppUserLoggedInStatus(
+                        false, currUser.authId);
                     context.read<AuthenticationService>().signOut();
                     Navigator.of(context).pushNamed(SignIn.routeName);
                   }),
