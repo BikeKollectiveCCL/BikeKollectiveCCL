@@ -47,6 +47,8 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                   currentRide.checkOutBike(thisRide);
                   createRide(thisRide);
                   // TODO: how to catch and handle race conditions where the bike is already checked out?
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 child: Text('Confirm Checkout')),
           ],

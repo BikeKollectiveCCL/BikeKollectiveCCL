@@ -12,6 +12,7 @@ class Ride {
   DateTime checkoutTime;
   DateTime returnTime;
   var docID;
+  num rating;
 
   Ride(
     Bike aBike,

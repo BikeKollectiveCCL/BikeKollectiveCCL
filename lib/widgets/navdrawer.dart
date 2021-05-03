@@ -22,14 +22,14 @@ Widget navDrawer(BuildContext context) {
               ListTile(
                   title: Text('Bike List'),
                   onTap: () {
-                    // Navigator.of(context).pushNamed(BikeList.routeName);
-                    Navigator.pushReplacementNamed(context, BikeList.routeName);
+                    Navigator.of(context).pushNamed(BikeList.routeName);
+                    // Navigator.pushReplacementNamed(context, BikeList.routeName);
                   }),
               ListTile(
                   title: Text('Bike Map'),
                   onTap: () {
-                    // Navigator.of(context).pushNamed(BikeMap.routeName);
-                    Navigator.pushReplacementNamed(context, BikeMap.routeName);
+                    Navigator.of(context).pushNamed(BikeMap.routeName);
+                    // Navigator.pushReplacementNamed(context, BikeMap.routeName);
                   }),
               ListTile(
                   title: Text('Add Bike'),
