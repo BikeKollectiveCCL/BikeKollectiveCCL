@@ -12,6 +12,7 @@ import 'screens/bike_view.dart';
 import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
+import 'screens/report_bike.dart';
 import 'wrappers/authentication_wrapper.dart';
 import 'models/currentRideState.dart';
 
@@ -30,6 +31,7 @@ class _BikeKollectiveState extends State<BikeKollective> {
     ReturnBike.routeName: (context) => ReturnBike(),
     SingleBikeMap.routeName: (context) => SingleBikeMap(),
     CheckoutBike.routeName: (context) => CheckoutBike(),
+    ReportBike.routeName: (context) => ReportBike(),
     SignIn.routeName: (context) => SignIn(),
     SignUp.routeName: (context) => SignUp()
   };

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:transparent_image/transparent_image.dart';
 import '../models/bike.dart';
 import 'checkout_bike.dart';
 import 'single_bike_map.dart';
 import '../screens/sign_in.dart';
+import '../screens/report_bike.dart';
 
 class BikeView extends StatelessWidget {
   // TODO: Should the bike be re-loaded from Firestore in case its state has changed since the list was loaded?
@@ -21,7 +23,13 @@ class BikeView extends StatelessWidget {
               child: Column(
             children: [
               Text('Placeholder bike page for ${thisBike.bikeName}'),
-              Text('Image will go here'),
+              SizedBox(
+                  height: 300,
+                  child: Semantics(
+                      label: 'bike image',
+                      child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: thisBike.url))),
               if (thisBike.averageRating != null)
                 RatingBarIndicator(
                   rating: thisBike.averageRating,
@@ -34,28 +42,31 @@ class BikeView extends StatelessWidget {
                 )
               else
                 Text('This bike has no ratings'),
-              if (thisBike.isCheckedOut) Text('currently checked out'),
-              if (!thisBike.isCheckedOut) Text('this bike is available'),
+              if (thisBike.isCheckedOut)
+                Text('currently checked out')
+              else
+                Text('this bike is available'),
               Text(thisBike.bikeDescription),
               if (!thisBike.isCheckedOut) Text('Checkout button'),
-              Text('Report an issue button'),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(SingleBikeMap.routeName,
-                        arguments: thisBike);
-                  },
-                  child: Text('View bike on map')),
+              simpleButton(
+                  context, ReportBike.routeName, 'Report bike', thisBike),
+              simpleButton(context, SingleBikeMap.routeName, 'View bike on map',
+                  thisBike),
               if (!thisBike.isCheckedOut)
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(CheckoutBike.routeName,
-                          arguments: thisBike);
-                    },
-                    child: Text('Check out bike'))
+                simpleButton(
+                    context, CheckoutBike.routeName, 'Check out bike', thisBike)
             ],
           )));
     } else {
       return SignIn();
     }
   }
+}
+
+Widget simpleButton(context, String route, String label, Bike bike) {
+  return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(route, arguments: bike);
+      },
+      child: Text(label));
 }

@@ -30,7 +30,7 @@ dependencies:
   location: ^4.1.1
   image_picker: ^0.6.2
   provider: ^5.0.0
-
+  transparent_image: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
