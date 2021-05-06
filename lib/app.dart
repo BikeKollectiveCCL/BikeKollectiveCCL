@@ -1,5 +1,8 @@
+import 'package:bikekollective/models/app_user.dart';
 import 'package:bikekollective/screens/sign_in.dart';
 import 'package:bikekollective/services/authentication_service.dart';
+import 'package:bikekollective/services/firebase_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +49,16 @@ class _BikeKollectiveState extends State<BikeKollective> {
           ListenableProvider<CurrentRideState>(
             create: (context) => CurrentRideState(),
           ),
+          Provider<FirebaseService>(
+            create: (context) => FirebaseService(FirebaseFirestore.instance),
+          ),
+          ListenableProvider<AppUser>(
+            create: (context) => AppUser(),
+          ),
+          StreamProvider(
+              initialData: null,
+              create: (context) =>
+                  context.read<FirebaseService>().getAppUserCollectionStream()),
           StreamProvider(
               initialData: null,
               create: (context) =>

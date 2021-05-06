@@ -41,7 +41,9 @@ class SignIn extends StatelessWidget {
               );
               // Find the ScaffoldMessenger in the widget tree
               // and use it to show a SnackBar.
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              if (snackBar != null) {
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
               if (response["success"]) {
                 //go to root '/'
                 Navigator.of(context).pushNamed(BikeMap.routeName);
