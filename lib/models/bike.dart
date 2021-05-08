@@ -10,6 +10,7 @@ class Bike {
   bool isCheckedOut;
   var bikeID;
   String url;
+  Map tags;
   // List bikeTags;
   // List bikeImages;
   // List bikeIssues;
@@ -30,5 +31,6 @@ class Bike {
     this.bikeID = bikeDocID;
     this.url = bikeMap['url'];
     this.countRatings = bikeMap['count_ratings'];
+    this.tags = bikeMap['tags'];
   }
 }

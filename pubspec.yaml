@@ -31,6 +31,7 @@ dependencies:
   image_picker: ^0.6.2
   provider: ^5.0.0
   transparent_image: ^1.0.0
+  flutter_tags: "^0.4.9+1"
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,6 +57,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/text/waiver.txt
+    - assets/text/tags.txt
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

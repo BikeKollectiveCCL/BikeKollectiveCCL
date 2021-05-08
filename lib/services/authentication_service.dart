@@ -48,7 +48,7 @@ class AuthenticationService {
       } else if (e.code == 'wrong-password') {
         return formatMsg(false, 'Wrong password provided for that user.');
       } else if (e.code == 'too-many-requests') {
-        return formatMsg(false, 'Email previously sent.');
+        return formatMsg(false, 'Please verify email. Email previously sent.');
       }
     } catch (e) {
       // something has gone terribly wrong
