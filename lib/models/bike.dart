@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Bike {
   String bikeName;
   double latitude;
   double longitude;
+  GeoPoint location;
   double averageRating;
   int countRatings;
   String bikeType;
@@ -11,14 +14,10 @@ class Bike {
   var bikeID;
   String url;
   Map tags;
-  // List bikeTags;
-  // List bikeImages;
-  // List bikeIssues;
 
   Bike.fromMap(Map bikeMap, var bikeDocID) {
     this.bikeName = bikeMap['description'];
-    this.latitude = bikeMap['location'].latitude;
-    this.longitude = bikeMap['location'].longitude;
+    this.location = bikeMap['location'];
     if (bikeMap['rating'] == null) {
       this.averageRating = null;
     } else {

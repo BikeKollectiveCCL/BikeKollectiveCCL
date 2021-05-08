@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
@@ -9,6 +8,7 @@ import '../models/currentRideState.dart';
 import '../models/ride.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
+import '../helpers/distance.dart';
 
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
@@ -18,7 +18,7 @@ class CheckoutBike extends StatefulWidget {
 
 class _CheckoutBikeState extends State<CheckoutBike> {
   // TODO: Show a "loading" icon while waiting for the checkout to complete
-  LocationData locationData;
+  LocationData currentLocation;
   @override
   Widget build(BuildContext context) {
     final Bike thisBike = ModalRoute.of(context).settings.arguments;
@@ -30,16 +30,22 @@ class _CheckoutBikeState extends State<CheckoutBike> {
             Text('Bike checkout placeholder'),
             ElevatedButton(
                 onPressed: () async {
-                  locationData = await getLocation();
+                  currentLocation = await getLocation();
+                  double distance = getDistance(
+                      thisBike.location.latitude,
+                      thisBike.location.longitude,
+                      currentLocation.latitude,
+                      currentLocation.longitude);
+                  print('You are $distance meters from the bike');
                   // TODO: force the bikes to reload so that this bike now shows as checked out
                   print('Bike ID: ${thisBike.bikeID}');
                   print('Checking out a bike ${thisBike.bikeDescription}');
                   print(
-                      'Currently located at ${locationData.latitude}, ${locationData.longitude}');
+                      'Currently located at ${currentLocation.latitude}, ${currentLocation.longitude}');
                   var thisUser = context.read<User>();
                   // create a new Ride instance, which will be temporarily assigned to the app's ride state
                   final Ride thisRide =
-                      Ride(thisBike, thisUser, locationData, DateTime.now());
+                      Ride(thisBike, thisUser, currentLocation, DateTime.now());
                   // tells Firestore that the bike is now checked out
                   updateBikeCheckout(thisBike);
                   // update app state so that it knows that a particular bike is checked out

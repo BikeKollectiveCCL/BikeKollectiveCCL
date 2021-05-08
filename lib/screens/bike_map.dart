@@ -40,7 +40,8 @@ class _BikeMapState extends State<BikeMap> {
         final bikeObj = Bike.fromMap(bike.data(), bike.reference.id);
         final bikeMarker = Marker(
           markerId: MarkerId(bikeObj.bikeDescription),
-          position: LatLng(bikeObj.latitude, bikeObj.longitude),
+          position:
+              LatLng(bikeObj.location.latitude, bikeObj.location.longitude),
           infoWindow: InfoWindow(
               title: bikeObj.bikeDescription,
               snippet: bikeObj.bikeDescription,
