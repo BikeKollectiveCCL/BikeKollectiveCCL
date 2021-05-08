@@ -59,7 +59,7 @@ class _BikeListState extends State<BikeList> {
     final thisBike = Bike.fromMap(document.data(), document.reference.id);
     var rating;
     if (thisBike.averageRating != null) {
-      rating = thisBike.averageRating;
+      rating = double.parse(thisBike.averageRating.toStringAsFixed(1));
     } else {
       rating = 'n/a';
     }
