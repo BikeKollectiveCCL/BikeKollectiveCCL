@@ -20,45 +20,47 @@ class BikeView extends StatelessWidget {
       final Bike thisBike = ModalRoute.of(context).settings.arguments;
       return Scaffold(
           appBar: AppBar(title: Text('Bike Kollective')),
-          body: Center(
-              child: Column(
+          body: ListView(
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             children: [
-              Text('Placeholder bike page for ${thisBike.bikeName}'),
-              SizedBox(
-                  height: 300,
-                  child: Semantics(
-                      label: 'bike image',
-                      child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: thisBike.url))),
-              if (thisBike.averageRating != null)
-                RatingBarIndicator(
-                  rating: thisBike.averageRating,
-                  itemBuilder: (context, index) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  itemCount: 5,
-                  itemSize: 40.0,
-                )
-              else
-                Text('This bike has no ratings'),
-              if (thisBike.isCheckedOut)
-                Text('currently checked out')
-              else
-                Text('this bike is available'),
-              Text(thisBike.bikeDescription),
-              if (thisBike.tags != null) loadTags(context, thisBike.tags),
-              if (!thisBike.isCheckedOut) Text('Checkout button'),
-              simpleButton(
-                  context, ReportBike.routeName, 'Report bike', thisBike),
-              simpleButton(context, SingleBikeMap.routeName, 'View bike on map',
-                  thisBike),
-              if (!thisBike.isCheckedOut)
+              Column(children: [
+                Text('Placeholder bike page for ${thisBike.bikeName}'),
+                SizedBox(
+                    height: 300,
+                    child: Semantics(
+                        label: 'bike image',
+                        child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image: thisBike.url))),
+                if (thisBike.averageRating != null)
+                  RatingBarIndicator(
+                    rating: thisBike.averageRating,
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    itemCount: 5,
+                    itemSize: 40.0,
+                  )
+                else
+                  Text('This bike has no ratings'),
+                if (thisBike.isCheckedOut)
+                  Text('currently checked out')
+                else
+                  Text('this bike is available'),
+                Text(thisBike.bikeDescription),
+                if (thisBike.tags != null) loadTags(context, thisBike.tags),
+                if (!thisBike.isCheckedOut) Text('Checkout button'),
                 simpleButton(
-                    context, CheckoutBike.routeName, 'Check out bike', thisBike)
+                    context, ReportBike.routeName, 'Report bike', thisBike),
+                simpleButton(context, SingleBikeMap.routeName,
+                    'View bike on map', thisBike),
+                if (!thisBike.isCheckedOut)
+                  simpleButton(context, CheckoutBike.routeName,
+                      'Check out bike', thisBike)
+              ])
             ],
-          )));
+          ));
     } else {
       return SignIn();
     }
