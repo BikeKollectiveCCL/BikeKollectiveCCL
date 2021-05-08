@@ -8,6 +8,7 @@ class BikeDTO {
   double rating;
   String type;
   String url;
+  Map<String, dynamic> tags;
 
   BikeDTO(
       {this.checked_out = false,
@@ -16,7 +17,8 @@ class BikeDTO {
       this.lock_combination,
       this.rating,
       this.type,
-      this.url});
+      this.url,
+      this.tags});
 
   void upload() {
     FirebaseFirestore.instance.collection('bikes').add({
@@ -27,7 +29,8 @@ class BikeDTO {
       'rating': this.rating,
       'type': this.type,
       'url': this.url,
-      'count_ratings': 0
+      'count_ratings': 0,
+      'tags': this.tags
     });
   }
 }
