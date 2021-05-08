@@ -28,13 +28,15 @@ class _SingleBikeMap extends State<SingleBikeMap> {
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
-            target: LatLng(thisBike.latitude, thisBike.longitude),
+            target:
+                LatLng(thisBike.location.latitude, thisBike.location.longitude),
             zoom: 10,
           ),
           markers: [
             Marker(
                 markerId: MarkerId(thisBike.bikeName),
-                position: LatLng(thisBike.latitude, thisBike.longitude),
+                position: LatLng(
+                    thisBike.location.latitude, thisBike.location.longitude),
                 infoWindow: InfoWindow(
                     title: thisBike.bikeName,
                     snippet: thisBike.bikeDescription))

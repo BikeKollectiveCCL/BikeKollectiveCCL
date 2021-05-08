@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -19,7 +20,7 @@ class ReturnBike extends StatefulWidget {
 class _ReturnBikeState extends State<ReturnBike> {
   final formKey = GlobalKey<FormState>();
   // TODO: Show a "loading" icon while waiting for the return to complete
-  LocationData locationData;
+  LocationData currentLocation;
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
@@ -48,10 +49,13 @@ class _ReturnBikeState extends State<ReturnBike> {
                         }),
                     ElevatedButton(
                         onPressed: () async {
-                          locationData = await getLocation();
-                          currentRide.returnLocation = locationData;
+                          currentLocation = await getLocation();
+                          currentRide.returnLocation = currentLocation;
                           currentRide.returnTime = DateTime.now();
                           rideState.returnBike();
+                          bikeToReturn.location = GeoPoint(
+                              currentLocation.latitude,
+                              currentLocation.longitude);
                           updateBikeReturn(bikeToReturn, currentRide.rating);
                           updateRide(currentRide);
                           Navigator.pop(context);

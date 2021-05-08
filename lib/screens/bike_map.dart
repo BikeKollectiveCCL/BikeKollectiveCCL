@@ -20,14 +20,14 @@ class BikeMap extends StatefulWidget {
 }
 
 class _BikeMapState extends State<BikeMap> {
-  LocationData locationData;
+  LocationData currentLocation;
   var latitude = 0.0;
   var longitude = 0.0;
 
   final Map<String, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
     // get the current location from location services
-    locationData = await getLocation();
+    currentLocation = await getLocation();
 
     // load the bikes from firestore
     QuerySnapshot bikeSnapshot =
@@ -40,7 +40,8 @@ class _BikeMapState extends State<BikeMap> {
         final bikeObj = Bike.fromMap(bike.data(), bike.reference.id);
         final bikeMarker = Marker(
           markerId: MarkerId(bikeObj.bikeDescription),
-          position: LatLng(bikeObj.latitude, bikeObj.longitude),
+          position:
+              LatLng(bikeObj.location.latitude, bikeObj.location.longitude),
           infoWindow: InfoWindow(
               title: bikeObj.bikeDescription,
               snippet: bikeObj.bikeDescription,
@@ -52,9 +53,9 @@ class _BikeMapState extends State<BikeMap> {
         _markers[bikeObj.bikeDescription] = bikeMarker;
       }
 
-      if (locationData != null) {
-        latitude = locationData.latitude;
-        longitude = locationData.longitude;
+      if (currentLocation != null) {
+        latitude = currentLocation.latitude;
+        longitude = currentLocation.longitude;
       }
       // move the camera to the current location when it loads
       controller.animateCamera(CameraUpdate.newCameraPosition(

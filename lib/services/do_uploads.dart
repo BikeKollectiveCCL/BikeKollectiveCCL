@@ -37,8 +37,12 @@ void updateBikeReturn(Bike thisBike, double rating) async {
   CollectionReference bikes = FirebaseFirestore.instance.collection('bikes');
   return bikes
       .doc(thisBike.bikeID)
-      .update(
-          {'checked_out': false, 'count_ratings': newCount, 'rating': newAvg})
+      .update({
+        'checked_out': false,
+        'count_ratings': newCount,
+        'rating': newAvg,
+        'location': thisBike.location
+      })
       .then((value) => print('Bike updated'))
       .catchError((error) => print('Failed to update bike: $error'));
 }
