@@ -50,7 +50,6 @@ class BikeView extends StatelessWidget {
                   Text('this bike is available'),
                 Text(thisBike.bikeDescription),
                 if (thisBike.tags != null) loadTags(context, thisBike.tags),
-                if (!thisBike.isCheckedOut) Text('Checkout button'),
                 simpleButton(
                     context, ReportBike.routeName, 'Report bike', thisBike),
                 simpleButton(context, SingleBikeMap.routeName,
