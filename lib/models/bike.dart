@@ -25,7 +25,7 @@ class Bike {
     }
     this.bikeType = bikeMap['type'];
     this.bikeDescription = bikeMap['description'];
-    this.lockCombination = bikeMap['combination'];
+    this.lockCombination = bikeMap['lock_combination'];
     this.isCheckedOut = bikeMap['checked_out'];
     this.bikeID = bikeDocID;
     this.url = bikeMap['url'];

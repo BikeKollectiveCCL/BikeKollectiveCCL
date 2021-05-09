@@ -39,17 +39,18 @@ class _BikeMapState extends State<BikeMap> {
       for (final bike in allBikes) {
         final bikeObj = Bike.fromMap(bike.data(), bike.reference.id);
         final bikeMarker = Marker(
-          markerId: MarkerId(bikeObj.bikeDescription),
-          position:
-              LatLng(bikeObj.location.latitude, bikeObj.location.longitude),
-          infoWindow: InfoWindow(
-              title: bikeObj.bikeDescription,
-              snippet: bikeObj.bikeDescription,
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(BikeView.routeName, arguments: bikeObj);
-              }),
-        );
+            markerId: MarkerId(bikeObj.bikeDescription),
+            position:
+                LatLng(bikeObj.location.latitude, bikeObj.location.longitude),
+            infoWindow: InfoWindow(
+                title: bikeObj.bikeDescription,
+                snippet: bikeObj.bikeDescription,
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(BikeView.routeName, arguments: bikeObj);
+                }),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                (bikeObj.isCheckedOut) ? BitmapDescriptor.hueRed : 207));
         _markers[bikeObj.bikeDescription] = bikeMarker;
       }
 

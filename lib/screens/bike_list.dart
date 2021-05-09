@@ -37,6 +37,7 @@ class _BikeListState extends State<BikeList> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('bikes')
+            .orderBy('checked_out')
             .orderBy('rating', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -76,6 +77,7 @@ class _BikeListState extends State<BikeList> {
             Navigator.of(context)
                 .pushNamed(BikeView.routeName, arguments: thisBike);
           },
+          tileColor: thisBike.isCheckedOut ? Colors.red.shade100 : Colors.white,
         ));
   }
 }

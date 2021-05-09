@@ -16,7 +16,6 @@ import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
 import 'screens/report_bike.dart';
-import 'wrappers/authentication_wrapper.dart';
 import 'models/currentRideState.dart';
 
 class BikeKollective extends StatefulWidget {
