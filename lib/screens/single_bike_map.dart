@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/bike.dart';
-import '../widgets/navdrawer.dart';
 import '../screens/sign_in.dart';
 
 class SingleBikeMap extends StatefulWidget {
@@ -12,19 +12,37 @@ class SingleBikeMap extends StatefulWidget {
 }
 
 class _SingleBikeMap extends State<SingleBikeMap> {
+  Future<void> _onMapCreated(GoogleMapController controller) async {
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
     final Bike thisBike = ModalRoute.of(context).settings.arguments;
     final firebaseUser = context.watch<User>();
     if (firebaseUser != null) {
       return Scaffold(
-          appBar: AppBar(
-            title: Text('${thisBike.bikeName}'),
-            backgroundColor: Colors.green[700],
+        appBar: AppBar(
+          title: Text('${thisBike.bikeName}'),
+          backgroundColor: Colors.green[700],
+        ),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target:
+                LatLng(thisBike.location.latitude, thisBike.location.longitude),
+            zoom: 10,
           ),
-          drawer: navDrawer(context),
-          body: Column(
-            children: [Text('Bike Map placeholder')],
-          ));
+          markers: [
+            Marker(
+                markerId: MarkerId(thisBike.bikeName),
+                position: LatLng(
+                    thisBike.location.latitude, thisBike.location.longitude),
+                infoWindow: InfoWindow(
+                    title: thisBike.bikeName,
+                    snippet: thisBike.bikeDescription))
+          ].toSet(),
+        ),
+      );
     } else {
       return SignIn();
     }

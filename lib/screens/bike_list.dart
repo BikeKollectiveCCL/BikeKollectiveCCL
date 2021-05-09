@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/bike.dart';
 import '../screens/bike_view.dart';
 import '../widgets/navdrawer.dart';
 import '../screens/sign_in.dart';
-
-// import '../screens/single_bike_map.dart';
 
 class BikeList extends StatefulWidget {
   static const routeName = 'bikeList';
@@ -58,11 +56,20 @@ class _BikeListState extends State<BikeList> {
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-    final thisBike = Bike.fromMap(document.data());
+    final thisBike = Bike.fromMap(document.data(), document.reference.id);
+    var rating;
+    if (thisBike.averageRating != null) {
+      rating = double.parse(thisBike.averageRating.toStringAsFixed(1));
+    } else {
+      rating = 'n/a';
+    }
     return Semantics(
         button: true,
         onTapHint: 'view bike',
         child: ListTile(
+          leading: Image.network(thisBike.url,
+              height: 50, width: 70, fit: BoxFit.fill),
+          trailing: Text('$rating'),
           title: Text('Bike ${thisBike.bikeName}'),
           subtitle: Text('${thisBike.bikeDescription}'),
           onTap: () {

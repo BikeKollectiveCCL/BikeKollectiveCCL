@@ -1,5 +1,8 @@
+import 'package:bikekollective/models/app_user.dart';
 import 'package:bikekollective/screens/sign_in.dart';
 import 'package:bikekollective/services/authentication_service.dart';
+import 'package:bikekollective/services/firebase_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +12,12 @@ import 'screens/add_bike.dart';
 import 'screens/return_bike.dart';
 import 'screens/single_bike_map.dart';
 import 'screens/bike_view.dart';
+import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
+import 'screens/report_bike.dart';
 import 'wrappers/authentication_wrapper.dart';
+import 'models/currentRideState.dart';
 
 class BikeKollective extends StatefulWidget {
   @override
@@ -27,6 +33,8 @@ class _BikeKollectiveState extends State<BikeKollective> {
     AddBike.routeName: (context) => AddBike(),
     ReturnBike.routeName: (context) => ReturnBike(),
     SingleBikeMap.routeName: (context) => SingleBikeMap(),
+    CheckoutBike.routeName: (context) => CheckoutBike(),
+    ReportBike.routeName: (context) => ReportBike(),
     SignIn.routeName: (context) => SignIn(),
     SignUp.routeName: (context) => SignUp()
   };
@@ -38,6 +46,19 @@ class _BikeKollectiveState extends State<BikeKollective> {
           Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance),
           ),
+          ListenableProvider<CurrentRideState>(
+            create: (context) => CurrentRideState(),
+          ),
+          Provider<FirebaseService>(
+            create: (context) => FirebaseService(FirebaseFirestore.instance),
+          ),
+          ListenableProvider<AppUser>(
+            create: (context) => AppUser(),
+          ),
+          StreamProvider(
+              initialData: null,
+              create: (context) =>
+                  context.read<FirebaseService>().getAppUserCollectionStream()),
           StreamProvider(
               initialData: null,
               create: (context) =>
