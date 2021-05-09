@@ -131,21 +131,33 @@ class _AddBikeState extends State<AddBike> {
           SizedBox(height: 6.0),
           FractionallySizedBox(
             widthFactor: 0.9,
-            child: TextFormField(
+            child: DropdownButtonFormField<String>(
               decoration: new InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Type',
-                  isDense: true),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Enter Type';
-                } else {
-                  return null;
-                }
+                border: OutlineInputBorder(),
+              ),
+              value: post.type,
+              hint: Text(
+                'Select type'
+              ),
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              onChanged: (String newValue) {
+                setState(() {
+                  post.type = newValue;
+                });
               },
-              onSaved: (value) {
-                return post.type = value;
-              },
+              validator: (value) => value == null ? 'Select type' : null,
+              items: <String>[
+                'BMX','City','Cruiser','Mountain', 'Road', 'Recumbent',
+                'Tandem', 'Touring', 'Other',
+              ]
+            .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
             ),
           ),
           SizedBox(height: 6.0),
