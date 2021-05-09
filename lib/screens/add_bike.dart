@@ -292,7 +292,7 @@ class _AddBikeState extends State<AddBike> {
     });
     post.location = GeoPoint(location.latitude, location.longitude);
     post.upload();
-    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(BikeList.routeName);
   }
 
   // load tags from file in assets/text directory
