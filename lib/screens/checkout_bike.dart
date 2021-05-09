@@ -68,6 +68,7 @@ class _CheckoutBikeState extends State<CheckoutBike> {
 }
 
 void distanceErrorDialog(context, double distance) {
+  var cleanDistance = double.parse(distance.toStringAsFixed(1));
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -77,7 +78,7 @@ void distanceErrorDialog(context, double distance) {
           content: SingleChildScrollView(
               child: ListBody(
             children: <Widget>[
-              Text('You are $distance meters from the bike'),
+              Text('You are $cleanDistance meters from the bike'),
               Text('You are too far away'),
               Text('You must be within 200 meters of the bike to check out')
             ],
