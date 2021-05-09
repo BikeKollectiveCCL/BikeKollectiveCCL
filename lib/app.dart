@@ -16,7 +16,7 @@ import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
 import 'screens/report_bike.dart';
-import 'wrappers/authentication_wrapper.dart';
+import 'screens/bike_combo.dart';
 import 'models/currentRideState.dart';
 
 class BikeKollective extends StatefulWidget {
@@ -34,6 +34,7 @@ class _BikeKollectiveState extends State<BikeKollective> {
     ReturnBike.routeName: (context) => ReturnBike(),
     SingleBikeMap.routeName: (context) => SingleBikeMap(),
     CheckoutBike.routeName: (context) => CheckoutBike(),
+    BikeCombo.routeName: (context) => BikeCombo(),
     ReportBike.routeName: (context) => ReportBike(),
     SignIn.routeName: (context) => SignIn(),
     SignUp.routeName: (context) => SignUp()

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/bike.dart';
 import '../models/currentRideState.dart';
 import '../models/ride.dart';
+import '../screens/bike_combo.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
 import '../helpers/distance.dart';
@@ -51,10 +52,12 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                   // update app state so that it knows that a particular bike is checked out
                   var currentRide = context.read<CurrentRideState>();
                   currentRide.checkOutBike(thisRide);
+                  // upload the ride info to storage
                   createRide(thisRide);
+                  // show the combination
+                  Navigator.of(context)
+                      .pushNamed(BikeCombo.routeName, arguments: thisBike);
                   // TODO: how to catch and handle race conditions where the bike is already checked out?
-                  Navigator.pop(context);
-                  Navigator.pop(context);
                 },
                 child: Text('Confirm Checkout')),
           ],
