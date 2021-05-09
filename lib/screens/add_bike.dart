@@ -12,6 +12,7 @@ import '../models/bikeDTO.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/sign_in.dart';
+import '../screens/bike_list.dart';
 
 class AddBike extends StatefulWidget {
   static const routeName = 'addBike';
@@ -27,6 +28,7 @@ class _AddBikeState extends State<AddBike> {
 
   final post = BikeDTO();
   final formKey = GlobalKey<FormState>();
+  var checkboxValue = false; 
 
   @override
   void initState() {
@@ -168,6 +170,27 @@ class _AddBikeState extends State<AddBike> {
               )),
           SizedBox(height: 6.0),
           FractionallySizedBox(widthFactor: 0.9, child: showTags(context)),
+          SizedBox(height:8.0),
+          FractionallySizedBox(
+            widthFactor:0.9,
+            child: CheckboxListTile(
+              value: checkboxValue,
+              onChanged: (val) {
+                setState(() => checkboxValue = val);
+              },
+              subtitle: !checkboxValue
+                  ? Text(
+                      'Required.',
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : null,
+              title: new Text(
+                'I agree to a release of interest.',
+                style: TextStyle(fontSize: 14.0),
+              ),
+              controlAffinity: ListTileControlAffinity.leading,
+              activeColor: Colors.green,
+            )),
           SizedBox(
             height: 15.0,
           ),
@@ -180,7 +203,7 @@ class _AddBikeState extends State<AddBike> {
                 child: ElevatedButton(
                   child: Text('Add Bike'),
                   onPressed: () {
-                    if (formKey.currentState.validate()) {
+                    if (formKey.currentState.validate() && checkboxValue) {
                       formKey.currentState.save();
                       saveToDatabase();
                     }

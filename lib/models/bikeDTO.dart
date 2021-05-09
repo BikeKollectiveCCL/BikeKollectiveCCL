@@ -21,6 +21,11 @@ class BikeDTO {
       this.tags});
 
   void upload() {
+    this.type = this.type.toLowerCase();
+    var temp = this.type[0].toUpperCase();
+    temp = temp + type.substring(1);
+    this.type = temp;
+
     FirebaseFirestore.instance.collection('bikes').add({
       'checked_out': this.checked_out,
       'description': this.description,
