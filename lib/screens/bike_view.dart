@@ -24,31 +24,39 @@ class BikeView extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             children: [
               Column(children: [
-                Text('Placeholder bike page for ${thisBike.bikeName}'),
                 SizedBox(
-                    height: 300,
+                    height: 200,
                     child: Semantics(
                         label: 'bike image',
                         child: FadeInImage.memoryNetwork(
                             placeholder: kTransparentImage,
                             image: thisBike.url))),
-                if (thisBike.averageRating != null)
-                  RatingBarIndicator(
-                    rating: thisBike.averageRating,
-                    itemBuilder: (context, index) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                  Text(
+                    thisBike.bikeType,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
                     ),
-                    itemCount: 5,
-                    itemSize: 40.0,
-                  )
-                else
-                  Text('This bike has no ratings'),
-                if (thisBike.isCheckedOut)
-                  Text('currently checked out')
-                else
-                  Text('this bike is available'),
+                  ),
+                  if (thisBike.averageRating != null)
+                    RatingBarIndicator(
+                      rating: thisBike.averageRating,
+                      itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 30.0,
+                    )
+                  else
+                    Text('This bike has no ratings'),
+                ],
+                ),
                 Text(thisBike.bikeDescription),
+                SizedBox(height: 15.0,),
                 if (thisBike.tags != null) loadTags(context, thisBike.tags),
                 simpleButton(
                     context, ReportBike.routeName, 'Report bike', thisBike),
@@ -57,6 +65,8 @@ class BikeView extends StatelessWidget {
                 if (!thisBike.isCheckedOut)
                   simpleButton(context, CheckoutBike.routeName,
                       'Check out bike', thisBike)
+                else
+                  Text('This bike is currently checked out. Check back soon!')
               ])
             ],
           ));

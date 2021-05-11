@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/bike.dart';
 import '../screens/bike_view.dart';
 import '../widgets/navdrawer.dart';
@@ -28,7 +29,15 @@ class _BikeListState extends State<BikeList> {
         body: bikeList(),
         drawer: navDrawer(context),
       );
-    } else {
+    }
+    if (firebaseUser != null) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Bike Kollective')),
+        body: bikeList(),
+        drawer: navDrawer(context),
+      );
+    }
+     else {
       return SignIn();
     }
   }
@@ -64,20 +73,42 @@ class _BikeListState extends State<BikeList> {
     } else {
       rating = 'n/a';
     }
+
     return Semantics(
         button: true,
         onTapHint: 'view bike',
         child: ListTile(
           leading: Image.network(thisBike.url,
               height: 50, width: 70, fit: BoxFit.fill),
-          trailing: Text('$rating'),
-          title: Text('Bike ${thisBike.bikeName}'),
-          subtitle: Text('${thisBike.bikeDescription}'),
+          trailing: rating != 'n/a' ? ratingBar(rating) : Text('n/a'),
+          title: Text('${thisBike.bikeType}'),
+          subtitle: Flexible(
+              child: new Container(
+                padding: new EdgeInsets.only(right: 13.0),
+                child: new Text(
+                  '${thisBike.bikeDescription}',
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
           onTap: () {
             Navigator.of(context)
                 .pushNamed(BikeView.routeName, arguments: thisBike);
           },
           tileColor: thisBike.isCheckedOut ? Colors.red.shade100 : Colors.white,
         ));
+  }
+
+  Widget ratingBar(double rating) {
+  return RatingBarIndicator(
+          rating: rating,
+          itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: Colors.amber,
+          ),
+          itemCount: 5,
+          itemSize: 15.0,
+          direction: Axis.horizontal,
+        );
   }
 }
