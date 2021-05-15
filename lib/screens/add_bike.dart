@@ -26,9 +26,9 @@ class _AddBikeState extends State<AddBike> {
   LocationData location;
   List<String> _availableTags;
 
-  final post = BikeDTO();
+  final new_bike = BikeDTO(tags: {});
   final formKey = GlobalKey<FormState>();
-  var checkboxValue = false; 
+  var checkboxValue = false;
 
   @override
   void initState() {
@@ -124,7 +124,7 @@ class _AddBikeState extends State<AddBike> {
                 }
               },
               onSaved: (value) {
-                return post.description = value;
+                return new_bike.description = value;
               },
             ),
           ),
@@ -135,29 +135,33 @@ class _AddBikeState extends State<AddBike> {
               decoration: new InputDecoration(
                 border: OutlineInputBorder(),
               ),
-              value: post.type,
-              hint: Text(
-                'Select type'
-              ),
+              value: new_bike.type,
+              hint: Text('Select type'),
               icon: const Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
               onChanged: (String newValue) {
                 setState(() {
-                  post.type = newValue;
+                  new_bike.type = newValue;
                 });
               },
               validator: (value) => value == null ? 'Select type' : null,
               items: <String>[
-                'BMX','City','Cruiser','Mountain', 'Road', 'Recumbent',
-                'Tandem', 'Touring', 'Other',
-              ]
-            .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+                'BMX',
+                'City',
+                'Cruiser',
+                'Mountain',
+                'Road',
+                'Recumbent',
+                'Tandem',
+                'Touring',
+                'Other',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
           ),
           SizedBox(height: 6.0),
@@ -177,32 +181,32 @@ class _AddBikeState extends State<AddBike> {
                   }
                 },
                 onSaved: (value) {
-                  return post.lock_combination = value;
+                  return new_bike.lock_combination = value;
                 },
               )),
           SizedBox(height: 6.0),
           FractionallySizedBox(widthFactor: 0.9, child: showTags(context)),
-          SizedBox(height:8.0),
+          SizedBox(height: 8.0),
           FractionallySizedBox(
-            widthFactor:0.9,
-            child: CheckboxListTile(
-              value: checkboxValue,
-              onChanged: (val) {
-                setState(() => checkboxValue = val);
-              },
-              subtitle: !checkboxValue
-                  ? Text(
-                      'Required.',
-                      style: TextStyle(color: Colors.red),
-                    )
-                  : null,
-              title: new Text(
-                'I agree to a release of interest.',
-                style: TextStyle(fontSize: 14.0),
-              ),
-              controlAffinity: ListTileControlAffinity.leading,
-              activeColor: Colors.green,
-            )),
+              widthFactor: 0.9,
+              child: CheckboxListTile(
+                value: checkboxValue,
+                onChanged: (val) {
+                  setState(() => checkboxValue = val);
+                },
+                subtitle: !checkboxValue
+                    ? Text(
+                        'Required.',
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : null,
+                title: new Text(
+                  'I agree to a release of interest.',
+                  style: TextStyle(fontSize: 14.0),
+                ),
+                controlAffinity: ListTileControlAffinity.leading,
+                activeColor: Colors.green,
+              )),
           SizedBox(
             height: 15.0,
           ),
@@ -230,7 +234,6 @@ class _AddBikeState extends State<AddBike> {
   @override
   Widget showTags(BuildContext context) {
     double _fontSize = 14;
-    post.tags = {};
     return Tags(
       key: _tagStateKey,
       itemCount: _availableTags.length, // required
@@ -252,7 +255,7 @@ class _AddBikeState extends State<AddBike> {
           combine: ItemTagsCombine.withTextBefore,
           onPressed: (tag) {
             print(tag);
-            post.tags[tag.title] = tag.active;
+            new_bike.tags[tag.title] = tag.active;
           },
           onLongPressed: (tag) => print(tag),
         );
@@ -300,10 +303,10 @@ class _AddBikeState extends State<AddBike> {
         .putFile(imageFile);
     var downloadUrl = await snapshot.ref.getDownloadURL();
     setState(() {
-      post.url = downloadUrl;
+      new_bike.url = downloadUrl;
     });
-    post.location = GeoPoint(location.latitude, location.longitude);
-    post.upload();
+    new_bike.location = GeoPoint(location.latitude, location.longitude);
+    new_bike.upload();
     Navigator.of(context).pushNamed(BikeList.routeName);
   }
 
