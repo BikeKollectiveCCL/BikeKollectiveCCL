@@ -14,6 +14,7 @@ class Bike {
   var bikeID;
   String url;
   Map tags;
+  int missingReports;
 
   Bike.fromMap(Map bikeMap, var bikeDocID) {
     this.bikeName = bikeMap['description'];
@@ -31,5 +32,6 @@ class Bike {
     this.url = bikeMap['url'];
     this.countRatings = bikeMap['count_ratings'];
     this.tags = bikeMap['tags'];
+    this.missingReports = bikeMap['missing_reports'];
   }
 }

@@ -16,6 +16,21 @@ void updateBikeCheckout(Bike thisBike) async {
       .catchError((error) => print('Failed to update bike: $error'));
 }
 
+void updateBikeMissing(Bike thisBike) async {
+  if (thisBike.missingReports != null) {
+    thisBike.missingReports += 1;
+  } else {
+    thisBike.missingReports = 1;
+  }
+  print('reporting bike as missing');
+  CollectionReference bikes = FirebaseFirestore.instance.collection('bikes');
+  return bikes
+      .doc(thisBike.bikeID)
+      .update({'missing_reports': thisBike.missingReports})
+      .then((value) => print('Bike updated'))
+      .catchError((error) => print('Failed to update bike: $error'));
+}
+
 void updateBikeReturn(Bike thisBike, double rating) async {
   double newAvg;
   int newCount;

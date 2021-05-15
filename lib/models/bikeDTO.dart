@@ -35,7 +35,8 @@ class BikeDTO {
       'type': this.type,
       'url': this.url,
       'count_ratings': 0,
-      'tags': this.tags
+      'tags': this.tags,
+      'missing_reports': 0
     });
   }
 }
