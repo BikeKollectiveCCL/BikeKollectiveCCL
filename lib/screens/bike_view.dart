@@ -34,29 +34,35 @@ class BikeView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                  Text(
-                    thisBike.bikeType,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                    ),
-                  ),
-                  if (thisBike.averageRating != null)
-                    RatingBarIndicator(
-                      rating: thisBike.averageRating,
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
+                    Text(
+                      thisBike.bikeType,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
                       ),
-                      itemCount: 5,
-                      itemSize: 30.0,
-                    )
-                  else
-                    Text('This bike has no ratings'),
-                ],
+                    ),
+                    if (thisBike.averageRating != null)
+                      RatingBarIndicator(
+                        rating: thisBike.averageRating,
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemCount: 5,
+                        itemSize: 30.0,
+                      )
+                    else
+                      Text('This bike has no ratings'),
+                  ],
                 ),
                 Text(thisBike.bikeDescription),
-                SizedBox(height: 15.0,),
+                SizedBox(
+                  height: 15.0,
+                ),
+                if (thisBike.missingReports >= 5)
+                  Text('This bike is probably missing')
+                else if (thisBike.missingReports > 0)
+                  Text('This bike may be missing'),
                 if (thisBike.tags != null) loadTags(context, thisBike.tags),
                 simpleButton(
                     context, ReportBike.routeName, 'Report bike', thisBike),
