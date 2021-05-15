@@ -35,10 +35,33 @@
     }
     ```
 3. Launch BikeKollectiveCCL (alternatively, call "flutter run" from terminal)
-4. For app login credentials, use same credentials as gmail
+4. For app login credentials, sign up with a email account and verify email
 
-## VS Code settings
-TBD (Linting, suggestions, extensions, workspace settings)
+## VS Code workspace settings
+1. Optional VScode workspace setting
+    ```
+    {
+        "folders": [
+            {
+                "name": "root",
+                "path": "."
+            },
+            {
+                "name": "lib",
+                "path": "./lib"
+            }
+        ],
+        "settings": {
+            "java.configuration.updateBuildConfiguration": "interactive",
+            "editor.formatOnSave": true,
+            "editor.formatOnSaveMode": "modifications",
+        },
+        "extensions": {
+            "recommendations": ["Dart-Code.dart-code", "Dart-Code.flutter", "Nash.awesome-flutter-snippets"]
+        }
+    }
+    ```
+
 
 ## Important links
 1. See authenticated users [here](https://console.firebase.google.com/project/bikekollective-e87b3/authentication/users)
