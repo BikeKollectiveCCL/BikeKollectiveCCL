@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_tags/flutter_tags.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:location/location.dart';
@@ -13,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/sign_in.dart';
 import '../screens/bike_list.dart';
+import '../widgets/tag_manager.dart';
 
 class AddBike extends StatefulWidget {
   static const routeName = 'addBike';
@@ -24,9 +23,8 @@ class _AddBikeState extends State<AddBike> {
   String url;
   File imageFile;
   LocationData location;
-  List<String> _availableTags;
 
-  final new_bike = BikeDTO(tags: {});
+  final newBike = BikeDTO(tags: {});
   final formKey = GlobalKey<FormState>();
   var checkboxValue = false;
 
@@ -34,7 +32,6 @@ class _AddBikeState extends State<AddBike> {
   void initState() {
     super.initState();
     getLocation();
-    loadAvailableTags();
   }
 
   @override
@@ -124,7 +121,7 @@ class _AddBikeState extends State<AddBike> {
                 }
               },
               onSaved: (value) {
-                return new_bike.description = value;
+                return newBike.description = value;
               },
             ),
           ),
@@ -135,14 +132,14 @@ class _AddBikeState extends State<AddBike> {
               decoration: new InputDecoration(
                 border: OutlineInputBorder(),
               ),
-              value: new_bike.type,
+              value: newBike.type,
               hint: Text('Select type'),
               icon: const Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
               onChanged: (String newValue) {
                 setState(() {
-                  new_bike.type = newValue;
+                  newBike.type = newValue;
                 });
               },
               validator: (value) => value == null ? 'Select type' : null,
@@ -181,11 +178,12 @@ class _AddBikeState extends State<AddBike> {
                   }
                 },
                 onSaved: (value) {
-                  return new_bike.lock_combination = value;
+                  return newBike.lock_combination = value;
                 },
               )),
           SizedBox(height: 6.0),
-          FractionallySizedBox(widthFactor: 0.9, child: showTags(context)),
+          FractionallySizedBox(
+              widthFactor: 0.9, child: showTags(context, newBike)),
           SizedBox(height: 8.0),
           FractionallySizedBox(
               widthFactor: 0.9,
@@ -231,46 +229,6 @@ class _AddBikeState extends State<AddBike> {
     ));
   }
 
-  @override
-  Widget showTags(BuildContext context) {
-    double _fontSize = 14;
-    return Tags(
-      key: _tagStateKey,
-      itemCount: _availableTags.length, // required
-      itemBuilder: (int index) {
-        final tag = _availableTags[index];
-
-        return ItemTags(
-          // Each ItemTags must contain a Key. Keys allow Flutter to
-          // uniquely identify widgets.
-          key: Key(index.toString()),
-          active: false,
-          color: Colors.white,
-          activeColor: Colors.blueAccent,
-          index: index, // required
-          title: tag,
-          textStyle: TextStyle(
-            fontSize: _fontSize,
-          ),
-          combine: ItemTagsCombine.withTextBefore,
-          onPressed: (tag) {
-            print(tag);
-            new_bike.tags[tag.title] = tag.active;
-          },
-          onLongPressed: (tag) => print(tag),
-        );
-      },
-    );
-  }
-
-  final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
-// Allows you to get a list of all the ItemTags
-  _getAllItem() {
-    List<Item> lst = _tagStateKey.currentState?.getAllItem;
-    if (lst != null)
-      lst.where((a) => a.active == true).forEach((a) => print(a.title));
-  }
-
   void getLocation() async {
     var locationService = Location();
     location = await locationService.getLocation();
@@ -303,16 +261,10 @@ class _AddBikeState extends State<AddBike> {
         .putFile(imageFile);
     var downloadUrl = await snapshot.ref.getDownloadURL();
     setState(() {
-      new_bike.url = downloadUrl;
+      newBike.url = downloadUrl;
     });
-    new_bike.location = GeoPoint(location.latitude, location.longitude);
-    new_bike.upload();
+    newBike.location = GeoPoint(location.latitude, location.longitude);
+    newBike.upload();
     Navigator.of(context).pushNamed(BikeList.routeName);
-  }
-
-  // load tags from file in assets/text directory
-  void loadAvailableTags() async {
-    String txt = await rootBundle.loadString("assets/text/tags.txt");
-    _availableTags = txt.split('\n');
   }
 }
