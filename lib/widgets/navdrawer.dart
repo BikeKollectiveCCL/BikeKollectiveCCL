@@ -19,6 +19,17 @@ Widget navDrawer(BuildContext context) {
       builder: (context, ride, child) => Drawer(
               child: ListView(
             children: <Widget>[
+
+              Container (
+                decoration: BoxDecoration (
+                    color: Colors.blue
+                ),
+                child: ListTile(
+                  leading: Icon(Icons.pedal_bike, color: Colors.white),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
+                ),
               ListTile(
                   title: Text('Bike List'),
                   onTap: () {

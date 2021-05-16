@@ -9,6 +9,7 @@ import '../screens/bike_view.dart';
 import '../widgets/navdrawer.dart';
 import '../screens/sign_in.dart';
 
+
 class BikeList extends StatefulWidget {
   static const routeName = 'bikeList';
   @override
@@ -23,13 +24,6 @@ class _BikeListState extends State<BikeList> {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
-    if (firebaseUser != null) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Bike Kollective')),
-        body: bikeList(),
-        drawer: navDrawer(context),
-      );
-    }
     if (firebaseUser != null) {
       return Scaffold(
         appBar: AppBar(title: Text('Bike Kollective')),
