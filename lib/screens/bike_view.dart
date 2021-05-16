@@ -9,6 +9,7 @@ import 'single_bike_map.dart';
 import '../screens/sign_in.dart';
 import '../screens/report_bike.dart';
 import '../widgets/tag_manager.dart';
+import '../widgets/ratingDisplay.dart';
 
 class BikeView extends StatelessWidget {
   // TODO: Should the bike be re-loaded from Firestore in case its state has changed since the list was loaded?
@@ -42,15 +43,7 @@ class BikeView extends StatelessWidget {
                       ),
                     ),
                     if (thisBike.averageRating != null)
-                      RatingBarIndicator(
-                        rating: thisBike.averageRating,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemCount: 5,
-                        itemSize: 30.0,
-                      )
+                      ratingDisplay(thisBike.averageRating, 30.0)
                     else
                       Text('No ratings yet.'),
                   ],

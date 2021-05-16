@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tags/flutter_tags.dart';
-import '../models/bikeDTO.dart';
 import '../models/bike.dart';
 import '../helpers/tags.dart';
 
@@ -30,36 +29,6 @@ Widget editTags(BuildContext context, Bike thisBike) {
         title: tag,
         textStyle: TextStyle(
           fontSize: 14,
-        ),
-        combine: ItemTagsCombine.withTextBefore,
-        onPressed: (tag) {
-          print(tag);
-          thisBike.tags[tag.title] = tag.active;
-        },
-        onLongPressed: (tag) => print(tag),
-      );
-    },
-  );
-}
-
-Widget addTags(BuildContext context, BikeDTO thisBike) {
-  double _fontSize = 14;
-  return Tags(
-    key: _tagStateKey,
-    itemCount: availableTags.length, // required
-    itemBuilder: (int index) {
-      final tag = availableTags[index];
-      return ItemTags(
-        // Each ItemTags must contain a Key. Keys allow Flutter to
-        // uniquely identify widgets.
-        key: Key(index.toString()),
-        active: false,
-        color: Colors.white,
-        activeColor: Colors.blueAccent,
-        index: index, // required
-        title: tag,
-        textStyle: TextStyle(
-          fontSize: _fontSize,
         ),
         combine: ItemTagsCombine.withTextBefore,
         onPressed: (tag) {

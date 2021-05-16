@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:location/location.dart';
-import '../models/bikeDTO.dart';
+import '../models/bike.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/sign_in.dart';
@@ -24,7 +24,7 @@ class _AddBikeState extends State<AddBike> {
   File imageFile;
   LocationData location;
 
-  final newBike = BikeDTO(tags: {});
+  final newBike = Bike(tags: {});
   final formKey = GlobalKey<FormState>();
   var checkboxValue = false;
 
@@ -121,7 +121,7 @@ class _AddBikeState extends State<AddBike> {
                 }
               },
               onSaved: (value) {
-                return newBike.description = value;
+                return newBike.bikeDescription = value;
               },
             ),
           ),
@@ -132,14 +132,14 @@ class _AddBikeState extends State<AddBike> {
               decoration: new InputDecoration(
                 border: OutlineInputBorder(),
               ),
-              value: newBike.type,
+              value: newBike.bikeType,
               hint: Text('Select type'),
               icon: const Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
               onChanged: (String newValue) {
                 setState(() {
-                  newBike.type = newValue;
+                  newBike.bikeType = newValue;
                 });
               },
               validator: (value) => value == null ? 'Select type' : null,
@@ -178,12 +178,12 @@ class _AddBikeState extends State<AddBike> {
                   }
                 },
                 onSaved: (value) {
-                  return newBike.lock_combination = value;
+                  return newBike.lockCombination = value;
                 },
               )),
           SizedBox(height: 6.0),
           FractionallySizedBox(
-              widthFactor: 0.9, child: addTags(context, newBike)),
+              widthFactor: 0.9, child: editTags(context, newBike)),
           SizedBox(height: 8.0),
           FractionallySizedBox(
               widthFactor: 0.9,

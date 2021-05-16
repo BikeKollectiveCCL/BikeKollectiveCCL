@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import '../models/bike.dart';
 import '../services/do_uploads.dart';
 import '../helpers/distance.dart';
+import '../helpers/genericDialog.dart';
 
 class ReportBike extends StatefulWidget {
   static const routeName = 'reportBike';
@@ -36,61 +37,15 @@ Widget missingButton(context, Bike thisBike) {
             currentLocation.latitude,
             currentLocation.longitude);
         if (distance > 200) {
-          distanceDialog(context);
+          genericDialog(context, 'Too far away', <Widget>[
+            Text('You are too far away from the bike\'s reported location'),
+            Text('Please get closer and try again.')
+          ]);
         } else {
           updateBikeMissing(thisBike);
-          confirmMissingDialog(context);
+          genericDialog(context, 'Bike reported',
+              <Widget>[Text('The bike has been reported missing.')]);
         }
       },
       child: Text('Report bike missing'));
-}
-
-void distanceDialog(context) {
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Too far away'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text('You are too far away from the bike\'s reported location'),
-                Text('Please get closer and try again.')
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
-                child: Text('Understood'))
-          ],
-        );
-      });
-}
-
-void confirmMissingDialog(context) {
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Bike reported'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [Text('The bike has been reported missing.')],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text('Acknowledge'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      });
 }
