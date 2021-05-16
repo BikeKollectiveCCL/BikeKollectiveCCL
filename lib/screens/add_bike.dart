@@ -183,7 +183,7 @@ class _AddBikeState extends State<AddBike> {
               )),
           SizedBox(height: 6.0),
           FractionallySizedBox(
-              widthFactor: 0.9, child: addTags(context, newBike)),
+              widthFactor: 0.9, child: editTags(context, newBike)),
           SizedBox(height: 8.0),
           FractionallySizedBox(
               widthFactor: 0.9,

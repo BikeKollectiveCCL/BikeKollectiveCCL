@@ -41,36 +41,6 @@ Widget editTags(BuildContext context, Bike thisBike) {
   );
 }
 
-Widget addTags(BuildContext context, Bike thisBike) {
-  double _fontSize = 14;
-  return Tags(
-    key: _tagStateKey,
-    itemCount: availableTags.length, // required
-    itemBuilder: (int index) {
-      final tag = availableTags[index];
-      return ItemTags(
-        // Each ItemTags must contain a Key. Keys allow Flutter to
-        // uniquely identify widgets.
-        key: Key(index.toString()),
-        active: false,
-        color: Colors.white,
-        activeColor: Colors.blueAccent,
-        index: index, // required
-        title: tag,
-        textStyle: TextStyle(
-          fontSize: _fontSize,
-        ),
-        combine: ItemTagsCombine.withTextBefore,
-        onPressed: (tag) {
-          print(tag);
-          thisBike.tags[tag.title] = tag.active;
-        },
-        onLongPressed: (tag) => print(tag),
-      );
-    },
-  );
-}
-
 Widget loadTags(BuildContext context, Map currentTags) {
   // convert Map to list of strings for tags that are set
   List<String> tags = [];
