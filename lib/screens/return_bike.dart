@@ -10,6 +10,7 @@ import '../models/ride.dart';
 import '../screens/sign_in.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
+import '../widgets/tag_manager.dart';
 
 class ReturnBike extends StatefulWidget {
   static const routeName = 'returnBike';
@@ -47,6 +48,7 @@ class _ReturnBikeState extends State<ReturnBike> {
                         onRatingUpdate: (rating) {
                           currentRide.rating = rating;
                         }),
+                    editTags(context, bikeToReturn),
                     ElevatedButton(
                         onPressed: () async {
                           currentLocation = await getLocation();

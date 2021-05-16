@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -9,6 +8,7 @@ import 'checkout_bike.dart';
 import 'single_bike_map.dart';
 import '../screens/sign_in.dart';
 import '../screens/report_bike.dart';
+import '../widgets/tag_manager.dart';
 
 class BikeView extends StatelessWidget {
   // TODO: Should the bike be re-loaded from Firestore in case its state has changed since the list was loaded?
@@ -79,49 +79,6 @@ class BikeView extends StatelessWidget {
     } else {
       return SignIn();
     }
-  }
-
-  Widget loadTags(BuildContext context, Map currentTags) {
-    // convert Map to list of strings for tags that are set
-    List<String> tags = [];
-    currentTags.forEach((key, value) {
-      if (value) {
-        tags.add(key);
-      }
-    });
-    double _fontSize = 14;
-    return Tags(
-      key: _tagStateKey,
-      itemCount: tags.length, // required
-      itemBuilder: (int index) {
-        final tag = tags[index];
-
-        return ItemTags(
-          // Each ItemTags must contain a Key. Keys allow Flutter to
-          // uniquely identify widgets.
-          key: Key(index.toString()),
-          active: true,
-          pressEnabled: false,
-          //color: Colors.blue,
-          activeColor: Colors.blueAccent,
-          index: index, // required
-          title: tag,
-          textStyle: TextStyle(
-            fontSize: _fontSize,
-          ),
-          combine: ItemTagsCombine.withTextBefore,
-          onLongPressed: (tag) => print(tag),
-        );
-      },
-    );
-  }
-
-  final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
-// Allows you to get a list of all the ItemTags
-  _getAllItem() {
-    List<Item> lst = _tagStateKey.currentState?.getAllItem;
-    if (lst != null)
-      lst.where((a) => a.active == true).forEach((a) => print(a.title));
   }
 }
 
