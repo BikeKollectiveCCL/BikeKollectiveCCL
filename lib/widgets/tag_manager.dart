@@ -42,7 +42,7 @@ Widget editTags(BuildContext context, Bike thisBike) {
   );
 }
 
-Widget addTags(BuildContext context, BikeDTO thisBike) {
+Widget addTags(BuildContext context, Bike thisBike) {
   double _fontSize = 14;
   return Tags(
     key: _tagStateKey,
