@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tags/flutter_tags.dart';
-import '../models/bikeDTO.dart';
 import '../models/bike.dart';
 import '../helpers/tags.dart';
 
