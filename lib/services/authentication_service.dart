@@ -82,6 +82,15 @@ class AuthenticationService {
     }
     return formatMsg(false, null);
   }
+
+  Future<void> resetPassword({String email}) async {
+    try {
+      FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      // something has gone terribly wrong
+      print(e);
+    }
+  }
 }
 
 formatMsg(success, message) {
