@@ -45,7 +45,7 @@ class BikeView extends StatelessWidget {
                     if (thisBike.averageRating != null)
                       ratingDisplay(thisBike.averageRating, 30.0)
                     else
-                      Text('This bike has no ratings'),
+                      Text('No ratings yet.'),
                   ],
                 ),
                 Text(thisBike.bikeDescription),
@@ -53,19 +53,33 @@ class BikeView extends StatelessWidget {
                   height: 15.0,
                 ),
                 if (thisBike.missingReports >= 5)
-                  Text('This bike is probably missing')
+                  Text('Warning: This bike is probably missing',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )
+                  )
                 else if (thisBike.missingReports > 0)
-                  Text('This bike may be missing'),
-                if (thisBike.tags != null) loadTags(context, thisBike.tags),
-                simpleButton(
-                    context, ReportBike.routeName, 'Report bike', thisBike),
-                simpleButton(context, SingleBikeMap.routeName,
-                    'View bike on map', thisBike),
+                  Text('Warning: This bike may be missing',
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    )
+                  ),
+                SizedBox(
+                  height: 3.0,
+                ),
                 if (!thisBike.isCheckedOut)
                   simpleButton(context, CheckoutBike.routeName,
-                      'Check out bike', thisBike)
+                      'Check out bike', thisBike, Colors.green)
                 else
-                  Text('This bike is currently checked out. Check back soon!')
+                  Text('This bike is currently checked out. Check back soon!'),
+                simpleButton(context, SingleBikeMap.routeName,
+                      'View bike on map', thisBike, Colors.blue),
+                simpleButton(context, ReportBike.routeName, 
+                      'Report bike', thisBike, Colors.blue),
+                SizedBox(
+                  height: 10.0,
+                ),
+                if (thisBike.tags != null) loadTags(context, thisBike.tags),
               ])
             ],
           ));
@@ -75,10 +89,13 @@ class BikeView extends StatelessWidget {
   }
 }
 
-Widget simpleButton(context, String route, String label, Bike bike) {
+Widget simpleButton(context, String route, String label, Bike bike, MaterialColor buttonColor) {
   return ElevatedButton(
       onPressed: () {
         Navigator.of(context).pushNamed(route, arguments: bike);
       },
+      style: ElevatedButton.styleFrom(
+                primary: buttonColor,
+      ),
       child: Text(label));
 }
