@@ -9,6 +9,7 @@ import '../models/ride.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
 import '../helpers/distance.dart';
+import '../helpers/genericDialog.dart';
 
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
@@ -37,7 +38,14 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                       currentLocation.latitude,
                       currentLocation.longitude);
                   if (distance > 200) {
-                    distanceErrorDialog(context, distance);
+                    var cleanDistance =
+                        double.parse(distance.toStringAsFixed(1));
+                    genericDialog(context, 'Too far away', <Widget>[
+                      Text('You are $cleanDistance meters from the bike'),
+                      Text('You are too far away'),
+                      Text(
+                          'You must be within 200 meters of the bike to check out')
+                    ]);
                   } else {
                     print('You are $distance meters from the bike');
                     // TODO: force the bikes to reload so that this bike now shows as checked out
@@ -57,7 +65,10 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                     // upload the ride info to storage
                     createRide(thisRide);
                     // show the combination
-                    bikeComboDialog(context, thisBike);
+                    genericDialog(context, 'Bike Combination', <Widget>[
+                      Text('The combination is ${thisBike.lockCombination}'),
+                      Text('Have a safe ride!')
+                    ]);
                     // TODO: how to catch and handle race conditions where the bike is already checked out?
                   }
                 },
@@ -65,61 +76,4 @@ class _CheckoutBikeState extends State<CheckoutBike> {
           ],
         )));
   }
-}
-
-void distanceErrorDialog(context, double distance) {
-  var cleanDistance = double.parse(distance.toStringAsFixed(1));
-  showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Too far away'),
-          content: SingleChildScrollView(
-              child: ListBody(
-            children: <Widget>[
-              Text('You are $cleanDistance meters from the bike'),
-              Text('You are too far away'),
-              Text('You must be within 200 meters of the bike to check out')
-            ],
-          )),
-          actions: [
-            TextButton(
-              child: Text('Acknowledge'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      });
-}
-
-void bikeComboDialog(context, Bike thisBike) {
-  showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Bike Combination'),
-          content: SingleChildScrollView(
-              child: ListBody(
-            children: <Widget>[
-              Text('The combination is ${thisBike.lockCombination}'),
-              Text('Have a safe ride!')
-            ],
-          )),
-          actions: [
-            TextButton(
-              child: Text('Thanks!'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      });
 }
