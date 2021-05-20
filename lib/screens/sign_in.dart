@@ -36,6 +36,7 @@ class SignIn extends StatelessWidget {
             height: 30,
           ),
           TextField(
+
             controller: emailController,
             decoration: InputDecoration(
               labelText: "Email",
@@ -72,9 +73,14 @@ class SignIn extends StatelessWidget {
                 final snackBar = SnackBar(
                   content: Text(response["message"]),
                   action: SnackBarAction(
-                    label: '',
-                    onPressed: () {
+                    label: response["message"] == 
+                        "Wrong password provided for that user." ? 
+                        "Reset password via email" : '',
+                    onPressed: () async {
                       // Some code if needed
+                      await context
+                          .read<AuthenticationService>()
+                          .resetPassword(email: emailController.text.trim());
                     },
                   ),
                 );
