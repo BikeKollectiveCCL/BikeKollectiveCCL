@@ -17,7 +17,6 @@ class BikeList extends StatefulWidget {
 }
 
 class _BikeListState extends State<BikeList> {
-  TextEditingController editingController = TextEditingController();
   bool activeSearch;
   var searchQuery;
 
@@ -25,6 +24,7 @@ class _BikeListState extends State<BikeList> {
   void initState() {
     super.initState();
     activeSearch = false;
+    searchQuery = null;
   }
 
   @override
@@ -42,35 +42,49 @@ class _BikeListState extends State<BikeList> {
   }
 
   StreamBuilder bikeList() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('bikes')
-            .orderBy('checked_out')
-            .orderBy('rating', descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              snapshot.data.docs != null &&
-              snapshot.data.docs.length > 0) {
-            return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) => _buildListItem(context, snapshot.data.docs[index]),
-                // {
-                // var thisBike = Bike.fromMap(snapshot.data.docs[index].data(), snapshot.data.docs[index].reference.id);
-                // var thisBikeTags = thisBike.tags;
-                // if (searchQuery == null){
-                //   return _buildListItem(context, snapshot.data.docs[index]);
-                // }
-                // else if (thisBikeTags != null && thisBikeTags.containsKey(searchQuery)) {
-                //   return _buildListItem(context, snapshot.data.docs[index]);
-                // }
-                // } 
-            );
-          } else {
-            print(snapshot);
-            return Center(child: CircularProgressIndicator());
-          }
-        });
+    if (searchQuery == null){
+      return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('bikes')
+              .orderBy('checked_out')
+              .orderBy('rating', descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData &&
+                snapshot.data.docs != null &&
+                snapshot.data.docs.length > 0) {
+              return ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) => _buildListItem(context, snapshot.data.docs[index]),
+              );
+            } else {
+              print(snapshot);
+              return Center(child: CircularProgressIndicator());
+            }
+          });
+    }
+    else {
+      return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('bikes')
+              .where(
+                'tags.' + searchQuery, isEqualTo: true
+                )
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData &&
+                snapshot.data.docs != null &&
+                snapshot.data.docs.length > 0) {
+              return ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) => 
+                  _buildListItem(context, snapshot.data.docs[index])
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          });
+    }
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
@@ -128,11 +142,7 @@ class _BikeListState extends State<BikeList> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: () => setState(() {
-              activeSearch = false;
-              searchQuery = null;
-            }               
-            ),
+            onPressed: () => Navigator.pushNamed(context, "bikeList") // 'resets' bike list
           )
         ],
       );
