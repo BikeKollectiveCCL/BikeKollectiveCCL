@@ -8,7 +8,7 @@ import '../screens/bike_view.dart';
 import '../widgets/navdrawer.dart';
 import '../widgets/ratingDisplay.dart';
 import '../screens/sign_in.dart';
-
+import '../helpers/tags.dart';
 
 class BikeList extends StatefulWidget {
   static const routeName = 'bikeList';
@@ -17,16 +17,22 @@ class BikeList extends StatefulWidget {
 }
 
 class _BikeListState extends State<BikeList> {
-  final bikes = List<Map>.generate(1000, (i) {
-    return {'name': 'Bike $i', 'description': 'Bike text $i'};
-  });
+  TextEditingController editingController = TextEditingController();
+  bool activeSearch;
+  var searchQuery;
+
+  @override
+  void initState() {
+    super.initState();
+    activeSearch = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     if (firebaseUser != null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Bike Kollective')),
+        appBar: _appBar(),
         body: bikeList(),
         drawer: navDrawer(context),
       );
@@ -48,8 +54,17 @@ class _BikeListState extends State<BikeList> {
               snapshot.data.docs.length > 0) {
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) =>
-                  _buildListItem(context, snapshot.data.docs[index]),
+              itemBuilder: (context, index) => _buildListItem(context, snapshot.data.docs[index]),
+                // {
+                // var thisBike = Bike.fromMap(snapshot.data.docs[index].data(), snapshot.data.docs[index].reference.id);
+                // var thisBikeTags = thisBike.tags;
+                // if (searchQuery == null){
+                //   return _buildListItem(context, snapshot.data.docs[index]);
+                // }
+                // else if (thisBikeTags != null && thisBikeTags.containsKey(searchQuery)) {
+                //   return _buildListItem(context, snapshot.data.docs[index]);
+                // }
+                // } 
             );
           } else {
             print(snapshot);
@@ -66,7 +81,6 @@ class _BikeListState extends State<BikeList> {
     } else {
       rating = 'n/a';
     }
-
     return Semantics(
         button: true,
         onTapHint: 'view bike',
@@ -90,5 +104,48 @@ class _BikeListState extends State<BikeList> {
           },
           tileColor: thisBike.isCheckedOut ? Colors.red.shade100 : Colors.white,
         ));
+  }
+
+  PreferredSizeWidget _appBar() {
+    if (activeSearch == true) {
+      return AppBar(
+        leading: Icon(Icons.search),
+        title: DropdownButton(
+          value: searchQuery,
+          hint: Text('Search by tag'),
+          items: availableTags.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+          onChanged: (value) {
+            setState(() {
+              searchQuery = value;
+            });
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => setState(() {
+              activeSearch = false;
+              searchQuery = null;
+            }               
+            ),
+          )
+        ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Bike Kollective"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => setState(() => activeSearch = true),
+          ),
+        ],
+      );
+    }
   }
 }
