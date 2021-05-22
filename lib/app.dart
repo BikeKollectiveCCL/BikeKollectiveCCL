@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:bikekollective/models/app_user.dart';
 import 'package:bikekollective/screens/sign_in.dart';
 import 'package:bikekollective/services/authentication_service.dart';
 import 'package:bikekollective/services/firebase_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'models/currentRideState.dart';
 import 'screens/bike_list.dart';
 import 'screens/bike_map.dart';
 import 'screens/add_bike.dart';
@@ -16,7 +17,6 @@ import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
 import 'screens/report_bike.dart';
-import 'models/currentRideState.dart';
 
 class BikeKollective extends StatefulWidget {
   @override
@@ -24,7 +24,6 @@ class BikeKollective extends StatefulWidget {
 }
 
 class _BikeKollectiveState extends State<BikeKollective> {
-  // static final routes = {BikeList.routeName: (context) => BikeList()};
   static final routes = {
     BikeMap.routeName: (context) => BikeMap(),
     BikeView.routeName: (context) => BikeView(),

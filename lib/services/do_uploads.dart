@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import '../models/bike.dart';
 import '../models/ride.dart';
 
@@ -88,5 +86,27 @@ void updateRide(Ride thisRide) async {
     'return_location': GeoPoint(
         thisRide.returnLocation.latitude, thisRide.returnLocation.longitude),
     'rating': thisRide.rating
+  });
+}
+
+Future<Map> getRide(String rideID) {
+  // get a single ride by document ID
+  return FirebaseFirestore.instance
+      .collection('rides')
+      .doc(rideID)
+      .get()
+      .then((DocumentSnapshot thisRide) {
+    return thisRide.data();
+  });
+}
+
+Future<Map> getBike(String bikeID) {
+  // get a single bike by document ID
+  return FirebaseFirestore.instance
+      .collection('bikes')
+      .doc(bikeID)
+      .get()
+      .then((DocumentSnapshot thisRide) {
+    return thisRide.data();
   });
 }

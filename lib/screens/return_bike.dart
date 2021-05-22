@@ -11,6 +11,7 @@ import '../screens/sign_in.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
 import '../widgets/tag_manager.dart';
+import '../helpers/database_handler.dart';
 
 class ReturnBike extends StatefulWidget {
   static const routeName = 'returnBike';
@@ -55,6 +56,8 @@ class _ReturnBikeState extends State<ReturnBike> {
                           currentRide.returnLocation = currentLocation;
                           currentRide.returnTime = DateTime.now();
                           rideState.returnBike();
+                          final databaseHandler = DatabaseHandler.getInstance();
+                          databaseHandler.clearRideState();
                           bikeToReturn.location = GeoPoint(
                               currentLocation.latitude,
                               currentLocation.longitude);
