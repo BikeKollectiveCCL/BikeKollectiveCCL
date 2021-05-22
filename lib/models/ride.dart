@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:location/location.dart';
-
-import 'bike.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:location/location.dart';
+import 'bike.dart';
 
 class Ride {
   Bike bike;
@@ -24,6 +23,18 @@ class Ride {
     this.user = aUser;
     this.checkoutLocation = coLocation;
     this.checkoutTime = coTime;
+  }
+
+  Ride.fromMap(Map rideMap, var rideDocID, Bike thisBike) {
+    this.bike = thisBike;
+    this.docID = rideDocID;
+    this.checkoutLocation = LocationData.fromMap({
+      'latitude': rideMap['checkout_location'].latitude,
+      'longitude': rideMap['checkout_location'].longitude,
+    });
+    Timestamp checkoutTimestamp = rideMap['checkout_time'];
+    this.checkoutTime = new DateTime.fromMicrosecondsSinceEpoch(
+        checkoutTimestamp.microsecondsSinceEpoch);
   }
 
   void printMe() {

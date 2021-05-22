@@ -8,6 +8,7 @@ import '../models/currentRideState.dart';
 import '../models/ride.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
+import '../helpers/database_handler.dart';
 import '../helpers/distance.dart';
 import '../helpers/genericDialog.dart';
 
@@ -64,6 +65,12 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                     currentRide.checkOutBike(thisRide);
                     // upload the ride info to storage
                     createRide(thisRide);
+
+                    // save ride and bike to database
+                    final databaseHandler = DatabaseHandler.getInstance();
+                    await databaseHandler.saveRideState(
+                        thisRide.docID, thisBike.bikeID);
+
                     // show the combination
                     genericDialog(context, 'Bike Combination', <Widget>[
                       Text('The combination is ${thisBike.lockCombination}'),
