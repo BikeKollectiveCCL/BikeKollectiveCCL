@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:workmanager/workmanager.dart';
 import '../models/currentRideState.dart';
 import '../models/ride.dart';
 import '../screens/sign_in.dart';
@@ -29,6 +30,9 @@ class _ReturnBikeState extends State<ReturnBike> {
     var rideState = context.read<CurrentRideState>();
     final Ride currentRide = rideState.currentRide;
     final bikeToReturn = rideState.getCheckedOutBike();
+    if (!rideState.onRide()) {
+      Navigator.pop(context);
+    }
     if (firebaseUser != null) {
       return Scaffold(
           appBar: AppBar(title: Text('Return bike')),
@@ -52,6 +56,8 @@ class _ReturnBikeState extends State<ReturnBike> {
                     editTags(context, bikeToReturn),
                     ElevatedButton(
                         onPressed: () async {
+                          Workmanager().cancelByUniqueName(
+                              'eightHourCheck_${currentRide.docID}');
                           currentLocation = await getLocation();
                           currentRide.returnLocation = currentLocation;
                           currentRide.returnTime = DateTime.now();

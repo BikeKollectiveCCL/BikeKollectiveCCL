@@ -1,6 +1,5 @@
 import 'package:bikekollective/models/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:bikekollective/screens/sign_in.dart';
 import 'package:bikekollective/services/authentication_service.dart';
@@ -19,17 +18,14 @@ Widget navDrawer(BuildContext context) {
       builder: (context, ride, child) => Drawer(
               child: ListView(
             children: <Widget>[
-
-              Container (
-                decoration: BoxDecoration (
-                    color: Colors.blue
-                ),
+              Container(
+                decoration: BoxDecoration(color: Colors.blue),
                 child: ListTile(
-                  leading: Icon(Icons.pedal_bike, color: Colors.white),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  }),
-                ),
+                    leading: Icon(Icons.pedal_bike, color: Colors.white),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    }),
+              ),
               ListTile(
                   title: Text('Bike List'),
                   onTap: () {

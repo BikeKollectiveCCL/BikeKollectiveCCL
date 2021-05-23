@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:transparent_image/transparent_image.dart';
-import '../models/bike.dart';
 import 'checkout_bike.dart';
 import 'single_bike_map.dart';
+import '../models/bike.dart';
+import '../models/ride.dart';
+import '../models/currentRideState.dart';
 import '../screens/sign_in.dart';
 import '../screens/report_bike.dart';
 import '../widgets/tag_manager.dart';
@@ -17,6 +18,8 @@ class BikeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
+    var rideState = context.read<CurrentRideState>();
+    final Ride currentRide = rideState.currentRide;
     if (firebaseUser != null) {
       final Bike thisBike = ModalRoute.of(context).settings.arguments;
       return Scaffold(
@@ -54,28 +57,26 @@ class BikeView extends StatelessWidget {
                 ),
                 if (thisBike.missingReports >= 5)
                   Text('Warning: This bike is probably missing',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    )
-                  )
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ))
                 else if (thisBike.missingReports > 0)
                   Text('Warning: This bike may be missing',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                    )
-                  ),
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                      )),
                 SizedBox(
                   height: 3.0,
                 ),
-                if (!thisBike.isCheckedOut)
+                if (!thisBike.isCheckedOut && !rideState.onRide())
                   simpleButton(context, CheckoutBike.routeName,
                       'Check out bike', thisBike, Colors.green)
                 else
                   Text('This bike is currently checked out. Check back soon!'),
                 simpleButton(context, SingleBikeMap.routeName,
-                      'View bike on map', thisBike, Colors.blue),
-                simpleButton(context, ReportBike.routeName, 
-                      'Report bike', thisBike, Colors.blue),
+                    'View bike on map', thisBike, Colors.blue),
+                simpleButton(context, ReportBike.routeName, 'Report bike',
+                    thisBike, Colors.blue),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -89,13 +90,14 @@ class BikeView extends StatelessWidget {
   }
 }
 
-Widget simpleButton(context, String route, String label, Bike bike, MaterialColor buttonColor) {
+Widget simpleButton(
+    context, String route, String label, Bike bike, MaterialColor buttonColor) {
   return ElevatedButton(
       onPressed: () {
         Navigator.of(context).pushNamed(route, arguments: bike);
       },
       style: ElevatedButton.styleFrom(
-                primary: buttonColor,
+        primary: buttonColor,
       ),
       child: Text(label));
 }
