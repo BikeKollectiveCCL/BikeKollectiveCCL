@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void genericDialog(context, String title, List bodyText) {
+void genericDialog(context, String title, List bodyText, int pops) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -11,8 +11,9 @@ void genericDialog(context, String title, List bodyText) {
           actions: [
             TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
+                  for (var i = 0; i <= pops; i++) {
+                    Navigator.of(context).pop();
+                  }
                 },
                 child: Text('Understood'))
           ],

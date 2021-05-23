@@ -1,14 +1,16 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
-import 'dart:async';
-import 'package:location/location.dart';
-import '../models/bike.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:location/location.dart';
+import '../helpers/genericDialog.dart';
+import '../models/bike.dart';
 import '../screens/sign_in.dart';
 import '../screens/bike_list.dart';
 import '../widgets/tag_manager.dart';
@@ -245,10 +247,15 @@ class _AddBikeState extends State<AddBike> {
 
   //camera picture
   Future takePicture() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-      imageFile = tempImage;
-    });
+    try {
+      var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
+      setState(() {
+        imageFile = tempImage;
+      });
+    } on PlatformException {
+      print('No camera found');
+      genericDialog(context, 'No camera', <Widget>[Text('No camera found')], 0);
+    }
   }
 
   void saveToDatabase() async {

@@ -42,14 +42,18 @@ Widget missingButton(context, Bike thisBike) {
             currentLocation.latitude,
             currentLocation.longitude);
         if (distance > 200) {
-          genericDialog(context, 'Too far away', <Widget>[
-            Text('You are too far away from the bike\'s reported location'),
-            Text('Please get closer and try again.')
-          ]);
+          genericDialog(
+              context,
+              'Too far away',
+              <Widget>[
+                Text('You are too far away from the bike\'s reported location'),
+                Text('Please get closer and try again.')
+              ],
+              1);
         } else {
           updateBikeMissing(thisBike);
           genericDialog(context, 'Bike reported',
-              <Widget>[Text('The bike has been reported missing.')]);
+              <Widget>[Text('The bike has been reported missing.')], 1);
         }
       },
       child: Text('Report bike missing'));
@@ -66,10 +70,14 @@ Widget issueButton(context, Bike thisBike) {
             currentLocation.latitude,
             currentLocation.longitude);
         if (distance > 200) {
-          genericDialog(context, 'Too far away', <Widget>[
-            Text('You are too far away from the bike\'s reported location'),
-            Text('Please get closer and try again.')
-          ]);
+          genericDialog(
+              context,
+              'Too far away',
+              <Widget>[
+                Text('You are too far away from the bike\'s reported location'),
+                Text('Please get closer and try again.')
+              ],
+              1);
         } else {
           Navigator.of(context)
               .pushNamed(ReportBikeIssue.routeName, arguments: thisBike);
