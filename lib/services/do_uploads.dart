@@ -56,7 +56,8 @@ void updateBikeReturn(Bike thisBike, double rating) async {
         'count_ratings': newCount,
         'rating': newAvg,
         'location': thisBike.location,
-        'tags': thisBike.tags
+        'tags': thisBike.tags,
+        'reported_issues': thisBike.reportedIssues
       })
       .then((value) => print('Bike updated'))
       .catchError((error) => print('Failed to update bike: $error'));

@@ -81,6 +81,9 @@ class BikeView extends StatelessWidget {
                   height: 10.0,
                 ),
                 if (thisBike.tags != null) loadTags(context, thisBike.tags),
+                if (thisBike.reportedIssues != null &&
+                    thisBike.reportedIssues.isNotEmpty)
+                  loadIssues(context, thisBike.reportedIssues),
               ])
             ],
           ));
@@ -100,4 +103,19 @@ Widget simpleButton(
         primary: buttonColor,
       ),
       child: Text(label));
+}
+
+Widget loadIssues(context, List issues) {
+  String outputText = '';
+  issues.forEach((element) {
+    outputText = outputText + element + '; ';
+  });
+  if (outputText.endsWith('; ')) {
+    outputText = outputText.substring(0, outputText.length - 2);
+  }
+  return Container(
+    child: Column(
+      children: [Text("Reported Issues"), Text(outputText)],
+    ),
+  );
 }
