@@ -48,6 +48,24 @@ class _ReturnBikeState extends State<ReturnBike> {
                         onRatingUpdate: (rating) {
                           currentRide.rating = rating;
                         }),
+                    FractionallySizedBox(
+                      widthFactor: 0.9,
+                      child: TextFormField(
+                        decoration: new InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'If any, enter bike issue(s) here',
+                          isDense: true,
+                        ),
+                        onSaved: (value) {
+                          if(bikeToReturn.reportedIssues == null) {
+                            bikeToReturn.reportedIssues = [];
+                          }
+                          if(value != '') {
+                            return bikeToReturn.reportedIssues.add(value);             
+                          }
+                        },
+                      ),
+                    ),
                     editTags(context, bikeToReturn),
                     ElevatedButton(
                         onPressed: () async {
@@ -58,6 +76,7 @@ class _ReturnBikeState extends State<ReturnBike> {
                           bikeToReturn.location = GeoPoint(
                               currentLocation.latitude,
                               currentLocation.longitude);
+                          formKey.currentState.save();
                           updateBikeReturn(bikeToReturn, currentRide.rating);
                           updateRide(currentRide);
                           Navigator.pop(context);

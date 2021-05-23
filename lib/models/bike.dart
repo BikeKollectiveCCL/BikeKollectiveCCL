@@ -15,6 +15,7 @@ class Bike {
   String url;
   Map tags;
   int missingReports;
+  List<dynamic> reportedIssues;
 
   Bike(
       {this.isCheckedOut = false,
@@ -24,7 +25,8 @@ class Bike {
       this.averageRating,
       this.bikeType,
       this.url,
-      this.tags});
+      this.tags,
+      this.reportedIssues});
 
   Bike.fromMap(Map bikeMap, var bikeDocID) {
     this.bikeName = bikeMap['description'];
@@ -43,6 +45,7 @@ class Bike {
     this.countRatings = bikeMap['count_ratings'];
     this.tags = bikeMap['tags'];
     this.missingReports = bikeMap['missing_reports'];
+    this.reportedIssues = bikeMap['reported_issues'];
   }
 
   void upload() {
@@ -61,7 +64,8 @@ class Bike {
       'url': this.url,
       'count_ratings': 0,
       'tags': this.tags,
-      'missing_reports': 0
+      'missing_reports': 0,
+      'reported_issues': this.reportedIssues
     });
   }
 }

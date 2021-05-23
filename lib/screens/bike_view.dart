@@ -54,16 +54,14 @@ class BikeView extends StatelessWidget {
                 ),
                 if (thisBike.missingReports >= 5)
                   Text('Warning: This bike is probably missing',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    )
-                  )
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ))
                 else if (thisBike.missingReports > 0)
                   Text('Warning: This bike may be missing',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                    )
-                  ),
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                      )),
                 SizedBox(
                   height: 3.0,
                 ),
@@ -73,13 +71,16 @@ class BikeView extends StatelessWidget {
                 else
                   Text('This bike is currently checked out. Check back soon!'),
                 simpleButton(context, SingleBikeMap.routeName,
-                      'View bike on map', thisBike, Colors.blue),
-                simpleButton(context, ReportBike.routeName, 
-                      'Report bike', thisBike, Colors.blue),
+                    'View bike on map', thisBike, Colors.blue),
+                simpleButton(context, ReportBike.routeName, 'Report bike',
+                    thisBike, Colors.blue),
                 SizedBox(
                   height: 10.0,
                 ),
                 if (thisBike.tags != null) loadTags(context, thisBike.tags),
+                if (thisBike.reportedIssues != null &&
+                    thisBike.reportedIssues.isNotEmpty)
+                  loadIssues(context, thisBike.reportedIssues),
               ])
             ],
           ));
@@ -89,13 +90,29 @@ class BikeView extends StatelessWidget {
   }
 }
 
-Widget simpleButton(context, String route, String label, Bike bike, MaterialColor buttonColor) {
+Widget simpleButton(
+    context, String route, String label, Bike bike, MaterialColor buttonColor) {
   return ElevatedButton(
       onPressed: () {
         Navigator.of(context).pushNamed(route, arguments: bike);
       },
       style: ElevatedButton.styleFrom(
-                primary: buttonColor,
+        primary: buttonColor,
       ),
       child: Text(label));
+}
+
+Widget loadIssues(context, List issues) {
+  String outputText = '';
+  issues.forEach((element) {
+    outputText = outputText + element + '; ';
+  });
+  if (outputText.endsWith('; ')) {
+    outputText = outputText.substring(0, outputText.length - 2);
+  }
+  return Container(
+    child: Column(
+      children: [Text("Reported Issues"), Text(outputText)],
+    ),
+  );
 }
