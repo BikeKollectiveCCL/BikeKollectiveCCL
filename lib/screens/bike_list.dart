@@ -42,7 +42,7 @@ class _BikeListState extends State<BikeList> {
   }
 
   StreamBuilder bikeList() {
-    if (searchQuery == null){
+    if (searchQuery == null) {
       return StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('bikes')
@@ -55,31 +55,28 @@ class _BikeListState extends State<BikeList> {
                 snapshot.data.docs.length > 0) {
               return ListView.builder(
                 itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) => _buildListItem(context, snapshot.data.docs[index]),
+                itemBuilder: (context, index) =>
+                    _buildListItem(context, snapshot.data.docs[index]),
               );
             } else {
               print(snapshot);
               return Center(child: CircularProgressIndicator());
             }
           });
-    }
-    else {
+    } else {
       return StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('bikes')
-              .where(
-                'tags.' + searchQuery, isEqualTo: true
-                )
+              .where('tags.' + searchQuery, isEqualTo: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData &&
                 snapshot.data.docs != null &&
                 snapshot.data.docs.length > 0) {
               return ListView.builder(
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) => 
-                  _buildListItem(context, snapshot.data.docs[index])
-              );
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) =>
+                      _buildListItem(context, snapshot.data.docs[index]));
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -103,13 +100,11 @@ class _BikeListState extends State<BikeList> {
               height: 50, width: 70, fit: BoxFit.fill),
           trailing: rating != 'n/a' ? ratingDisplay(rating, 15.0) : Text('n/a'),
           title: Text('${thisBike.bikeType}'),
-          subtitle: Flexible(
-            child: new Container(
-              padding: new EdgeInsets.only(right: 13.0),
-              child: new Text(
-                '${thisBike.bikeDescription}',
-                overflow: TextOverflow.ellipsis,
-              ),
+          subtitle: new Container(
+            padding: new EdgeInsets.only(right: 13.0),
+            child: new Text(
+              '${thisBike.bikeDescription}',
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           onTap: () {
@@ -128,11 +123,11 @@ class _BikeListState extends State<BikeList> {
           value: searchQuery,
           hint: Text('Search by tag'),
           items: availableTags.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
           onChanged: (value) {
             setState(() {
               searchQuery = value;
@@ -141,9 +136,10 @@ class _BikeListState extends State<BikeList> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () => Navigator.pushNamed(context, "bikeList") // 'resets' bike list
-          )
+              icon: Icon(Icons.close),
+              onPressed: () =>
+                  Navigator.pushNamed(context, "bikeList") // 'resets' bike list
+              )
         ],
       );
     } else {

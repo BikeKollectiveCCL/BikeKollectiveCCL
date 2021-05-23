@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 import '../models/bike.dart';
 import '../models/currentRideState.dart';
 import '../models/ride.dart';
@@ -11,6 +12,7 @@ import '../services/do_uploads.dart';
 import '../helpers/database_handler.dart';
 import '../helpers/distance.dart';
 import '../helpers/genericDialog.dart';
+import '../helpers/tasks.dart';
 
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
@@ -70,6 +72,13 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                     final databaseHandler = DatabaseHandler.getInstance();
                     await databaseHandler.saveRideState(
                         thisRide.docID, thisBike.bikeID);
+
+                    // schedule task
+                    await Workmanager().initialize(callbackDispatcher);
+                    print('Scheduling task');
+                    await Workmanager().registerPeriodicTask(
+                        'eightHourCheck_${thisRide.docID}', 'eightHourCheck',
+                        frequency: Duration(minutes: 1));
 
                     // show the combination
                     genericDialog(context, 'Bike Combination', <Widget>[
