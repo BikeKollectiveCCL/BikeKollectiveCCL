@@ -5,7 +5,6 @@ import 'package:transparent_image/transparent_image.dart';
 import 'checkout_bike.dart';
 import 'single_bike_map.dart';
 import '../models/bike.dart';
-import '../models/ride.dart';
 import '../models/currentRideState.dart';
 import '../screens/sign_in.dart';
 import '../screens/report_bike.dart';
@@ -19,7 +18,6 @@ class BikeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     var rideState = context.read<CurrentRideState>();
-    final Ride currentRide = rideState.currentRide;
     if (firebaseUser != null) {
       final Bike thisBike = ModalRoute.of(context).settings.arguments;
       return Scaffold(
