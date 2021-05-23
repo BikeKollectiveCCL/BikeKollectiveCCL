@@ -63,6 +63,18 @@ void updateBikeReturn(Bike thisBike, double rating) async {
       .catchError((error) => print('Failed to update bike: $error'));
 }
 
+void updateBikeIssues(Bike thisBike) async {
+  // update a bike's reported issues
+  print('updating a bike\'s issues');
+  print('${thisBike.tags}');
+  CollectionReference bikes = FirebaseFirestore.instance.collection('bikes');
+  return bikes
+      .doc(thisBike.bikeID)
+      .update({'reported_issues': thisBike.reportedIssues})
+      .then((value) => print('Bike updated'))
+      .catchError((error) => print('Failed to update bike: $error'));
+}
+
 void createRide(Ride thisRide) async {
   // create a Ride record in Firestore
   DocumentReference fsRide =
