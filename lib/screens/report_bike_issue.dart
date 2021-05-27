@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../models/bike.dart';
 import '../services/do_uploads.dart';
+import '../widgets/text_widgets.dart';
 
 class ReportBikeIssue extends StatefulWidget {
   static const routeName = 'reportBikeIssue';
@@ -16,7 +17,12 @@ class _ReportBikeIssueState extends State<ReportBikeIssue> {
     final Bike thisBike = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(title: Text('Report bike issue')),
-        body: Center(child: Column(children: [issueForm(thisBike)])));
+        body: Center(
+            child: Column(children: [
+          paddedCenteredText(
+              'Use the form below to enter any issues with the bike'),
+          issueForm(thisBike)
+        ])));
   }
 
   Widget issueForm(Bike thisBike) {

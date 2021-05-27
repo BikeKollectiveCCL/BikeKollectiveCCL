@@ -7,6 +7,7 @@ import '../services/do_uploads.dart';
 import '../helpers/distance.dart';
 import '../helpers/genericDialog.dart';
 import '../screens/report_bike_issue.dart';
+import '../widgets/text_widgets.dart';
 
 class ReportBike extends StatefulWidget {
   static const routeName = 'reportBike';
@@ -22,8 +23,10 @@ class _ReportBikeState extends State<ReportBike> {
         appBar: AppBar(title: Text('Report bike')),
         body: Center(
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Placeholder'),
+            paddedCenteredText(
+                'Use the buttons below to report an issue with ${thisBike.bikeName}'),
             missingButton(context, thisBike),
             issueButton(context, thisBike)
           ],

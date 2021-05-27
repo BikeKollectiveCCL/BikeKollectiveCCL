@@ -13,6 +13,7 @@ import '../helpers/database_handler.dart';
 import '../helpers/distance.dart';
 import '../helpers/genericDialog.dart';
 import '../helpers/tasks.dart';
+import '../widgets/text_widgets.dart';
 
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
@@ -30,8 +31,11 @@ class _CheckoutBikeState extends State<CheckoutBike> {
         appBar: AppBar(title: Text('Bike Kollective')),
         body: Center(
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Bike checkout placeholder'),
+            paddedCenteredText('Tap the button below to check out the bike'),
+            paddedCenteredText('You are checking out ${thisBike.bikeName}'),
+            paddedCenteredText('Please return the bike within 8 hours'),
             checkoutButton(thisBike),
           ],
         )));
@@ -96,7 +100,7 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                   Text('The combination is ${thisBike.lockCombination}'),
                   Text('Have a safe ride!')
                 ],
-                1);
+                2);
             // TODO: how to catch and handle race conditions where the bike is already checked out?
           }
         },

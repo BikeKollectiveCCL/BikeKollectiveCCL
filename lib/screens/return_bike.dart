@@ -13,6 +13,7 @@ import '../screens/sign_in.dart';
 import '../services/get_location.dart';
 import '../services/do_uploads.dart';
 import '../widgets/tag_manager.dart';
+import '../widgets/text_widgets.dart';
 import '../helpers/database_handler.dart';
 
 class ReturnBike extends StatefulWidget {
@@ -37,11 +38,19 @@ class _ReturnBikeState extends State<ReturnBike> {
     if (firebaseUser != null) {
       return Scaffold(
           appBar: AppBar(title: Text('Return bike')),
-          body: Center(
-              child: Column(children: [
-            Text('Return bike placeholder'),
-            returnForm(currentRide, rideState, bikeToReturn),
-          ])));
+          body: SingleChildScrollView(
+              child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                paddedCenteredText(
+                    'Complete the form below to return ${bikeToReturn.bikeName}'),
+                paddedCenteredText('We hope you enjoyed the ride!'),
+                paddedCenteredText(
+                    'You can give the bike, update tags, and let us know about any issues'),
+                Text('Return bike placeholder'),
+                returnForm(currentRide, rideState, bikeToReturn),
+              ]))));
     } else {
       return SignIn();
     }
@@ -53,35 +62,41 @@ class _ReturnBikeState extends State<ReturnBike> {
         key: formKey,
         child: Column(
           children: [
-            if (bikeToReturn != null) Text('${bikeToReturn.bikeName}'),
-            RatingBar(
-                allowHalfRating: true,
-                ratingWidget: RatingWidget(
-                    full: Icon(Icons.star),
-                    half: Icon(Icons.star_half),
-                    empty: Icon(Icons.star_border)),
-                onRatingUpdate: (rating) {
-                  currentRide.rating = rating;
-                }),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: RatingBar(
+                    allowHalfRating: true,
+                    ratingWidget: RatingWidget(
+                        full: Icon(Icons.star, color: Colors.amber),
+                        half: Icon(Icons.star_half, color: Colors.amber),
+                        empty: Icon(Icons.star_border, color: Colors.amber)),
+                    onRatingUpdate: (rating) {
+                      currentRide.rating = rating;
+                    })),
             FractionallySizedBox(
-              widthFactor: 0.9,
-              child: TextFormField(
-                decoration: new InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'If any, enter bike issue(s) here',
-                  isDense: true,
-                ),
-                onSaved: (value) {
-                  if (bikeToReturn.reportedIssues == null) {
-                    bikeToReturn.reportedIssues = [];
-                  }
-                  if (value != '') {
-                    return bikeToReturn.reportedIssues.add(value);
-                  }
-                },
-              ),
+                widthFactor: 0.9,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    decoration: new InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'If any, enter bike issue(s) here',
+                      isDense: true,
+                    ),
+                    onSaved: (value) {
+                      if (bikeToReturn.reportedIssues == null) {
+                        bikeToReturn.reportedIssues = [];
+                      }
+                      if (value != '') {
+                        return bikeToReturn.reportedIssues.add(value);
+                      }
+                    },
+                  ),
+                )),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: editTags(context, bikeToReturn),
             ),
-            editTags(context, bikeToReturn),
             ElevatedButton(
                 onPressed: () async {
                   Workmanager().cancelByUniqueName(

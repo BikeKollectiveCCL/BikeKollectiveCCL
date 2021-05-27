@@ -10,6 +10,7 @@ import '../screens/sign_in.dart';
 import '../screens/report_bike.dart';
 import '../widgets/tag_manager.dart';
 import '../widgets/ratingDisplay.dart';
+import '../widgets/text_widgets.dart';
 
 class BikeView extends StatelessWidget {
   // TODO: Should the bike be re-loaded from Firestore in case its state has changed since the list was loaded?
@@ -36,13 +37,7 @@ class BikeView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      thisBike.bikeType,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
+                    headerText(thisBike.bikeType, 22),
                     if (thisBike.averageRating != null)
                       ratingDisplay(thisBike.averageRating, 30.0)
                     else
@@ -113,7 +108,7 @@ Widget loadIssues(context, List issues) {
   }
   return Container(
     child: Column(
-      children: [Text("Reported Issues"), Text(outputText)],
+      children: [headerText('Reported Issues', 17), Text(outputText)],
     ),
   );
 }
