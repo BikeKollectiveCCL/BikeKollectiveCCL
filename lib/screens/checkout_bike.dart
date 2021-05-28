@@ -34,7 +34,7 @@ class _CheckoutBikeState extends State<CheckoutBike> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             paddedCenteredText('Tap the button below to check out the bike'),
-            paddedCenteredText('You are checking out ${thisBike.bikeName}'),
+            paddedCenteredText('You are checking out a ${thisBike.bikeType} bike'),
             paddedCenteredText('Please return the bike within 8 hours'),
             checkoutButton(thisBike),
           ],
