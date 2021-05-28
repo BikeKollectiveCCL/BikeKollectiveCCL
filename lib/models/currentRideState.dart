@@ -15,14 +15,13 @@ class CurrentRideState extends ChangeNotifier {
     // see if there is a bike currently checked out locally
     final databaseHandler = DatabaseHandler.getInstance();
     List<Map> rideState = await databaseHandler.getRideState();
-    if (rideState[0] != null) {
+    if (rideState != null && rideState.length > 0) {
       String rideID = rideState[0]['ride_ID'];
       String bikeID = rideState[0]['bike_ID'];
       Map rideMap = await getRide(rideID);
       Map bikeMap = await getBike(bikeID);
       Bike thisBike = Bike.fromMap(bikeMap, bikeID);
       this.currentRide = Ride.fromMap(rideMap, rideID, thisBike);
-      print(this.currentRide);
     }
   }
 

@@ -13,6 +13,7 @@ import '../helpers/database_handler.dart';
 import '../helpers/distance.dart';
 import '../helpers/genericDialog.dart';
 import '../helpers/tasks.dart';
+import '../widgets/text_widgets.dart';
 
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
@@ -30,8 +31,11 @@ class _CheckoutBikeState extends State<CheckoutBike> {
         appBar: AppBar(title: Text('Bike Kollective')),
         body: Center(
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Bike checkout placeholder'),
+            paddedCenteredText('Tap the button below to check out the bike'),
+            paddedCenteredText('You are checking out ${thisBike.bikeName}'),
+            paddedCenteredText('Please return the bike within 8 hours'),
             checkoutButton(thisBike),
           ],
         )));
@@ -48,11 +52,15 @@ class _CheckoutBikeState extends State<CheckoutBike> {
               currentLocation.longitude);
           if (distance > 200) {
             var cleanDistance = double.parse(distance.toStringAsFixed(1));
-            genericDialog(context, 'Too far away', <Widget>[
-              Text('You are $cleanDistance meters from the bike'),
-              Text('You are too far away'),
-              Text('You must be within 200 meters of the bike to check out')
-            ]);
+            genericDialog(
+                context,
+                'Too far away',
+                <Widget>[
+                  Text('You are $cleanDistance meters from the bike'),
+                  Text('You are too far away'),
+                  Text('You must be within 200 meters of the bike to check out')
+                ],
+                1);
           } else {
             print('You are $distance meters from the bike');
             // TODO: force the bikes to reload so that this bike now shows as checked out
@@ -85,10 +93,14 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                 frequency: Duration(minutes: 1));
 
             // show the combination
-            genericDialog(context, 'Bike Combination', <Widget>[
-              Text('The combination is ${thisBike.lockCombination}'),
-              Text('Have a safe ride!')
-            ]);
+            genericDialog(
+                context,
+                'Bike Combination',
+                <Widget>[
+                  Text('The combination is ${thisBike.lockCombination}'),
+                  Text('Have a safe ride!')
+                ],
+                2);
             // TODO: how to catch and handle race conditions where the bike is already checked out?
           }
         },

@@ -17,6 +17,7 @@ import 'screens/checkout_bike.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
 import 'screens/report_bike.dart';
+import 'screens/report_bike_issue.dart';
 
 class BikeKollective extends StatefulWidget {
   @override
@@ -34,7 +35,8 @@ class _BikeKollectiveState extends State<BikeKollective> {
     CheckoutBike.routeName: (context) => CheckoutBike(),
     ReportBike.routeName: (context) => ReportBike(),
     SignIn.routeName: (context) => SignIn(),
-    SignUp.routeName: (context) => SignUp()
+    SignUp.routeName: (context) => SignUp(),
+    ReportBikeIssue.routeName: (context) => ReportBikeIssue()
   };
 
   @override
