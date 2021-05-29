@@ -46,11 +46,10 @@ class _ReturnBikeState extends State<ReturnBike> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                 paddedCenteredText(
-                    'Complete the form below to return ${bikeToReturn.bikeName}'),
+                    'Complete the form below to return the ${bikeToReturn.bikeType} bike'),
                 paddedCenteredText('We hope you enjoyed the ride!'),
                 paddedCenteredText(
-                    'You can give the bike, update tags, and let us know about any issues'),
-                Text('Return bike placeholder'),
+                    'You can rate the bike, update tags, and let us know about any issues'),
                 returnForm(currentRide, rideState, bikeToReturn),
               ]))));
     } else {

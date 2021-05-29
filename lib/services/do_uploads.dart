@@ -41,7 +41,7 @@ void updateBikeReturn(Bike thisBike, double rating) async {
     }
     newCount = thisBike.countRatings + 1;
   } else {
-    newAvg = null;
+    newAvg = thisBike.averageRating;
     newCount = thisBike.countRatings;
   }
 
