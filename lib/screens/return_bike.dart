@@ -1,3 +1,4 @@
+import 'package:bikekollective/helpers/tasks.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _ReturnBikeState extends State<ReturnBike> {
   LocationData currentLocation;
   @override
   Widget build(BuildContext context) {
+    // final backgroundService = context.read()<Workmanager>();
     final firebaseUser = context.watch<User>();
     var rideState = context.read<CurrentRideState>();
     final Ride currentRide = rideState.currentRide;
@@ -99,8 +101,11 @@ class _ReturnBikeState extends State<ReturnBike> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  Workmanager().cancelByUniqueName(
-                      'eightHourCheck_${currentRide.docID}');
+                  // stop all notifications
+                  await Workmanager()
+                      .initialize(callbackDispatcher, isInDebugMode: true);
+                  await Workmanager().registerOneOffTask(
+                      "cancelAllNotifications", "cancelAllNotifications");
                   currentLocation = await getLocation();
                   currentRide.returnLocation = currentLocation;
                   currentRide.returnTime = DateTime.now();
@@ -112,6 +117,9 @@ class _ReturnBikeState extends State<ReturnBike> {
                   formKey.currentState.save();
                   updateBikeReturn(bikeToReturn, currentRide.rating);
                   updateRide(currentRide);
+
+                  // stop all background processes since no need to monitor bike
+                  Workmanager().cancelAll();
                   Navigator.pop(context);
                 },
                 child: Text('Confirm return'))

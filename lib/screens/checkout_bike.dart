@@ -15,6 +15,15 @@ import '../helpers/genericDialog.dart';
 import '../helpers/tasks.dart';
 import '../widgets/text_widgets.dart';
 
+// after this # of min elapsed, app will start bugging user
+final int ALLOWED_RIDE_TIME_MIN = 1;
+
+// after this # of min elapsed, account will get locked out indefintely
+final int ACCOUNT_LOCKOUT_THRESHOLD_MIN = 5;
+
+// after ALLOWED_RIDE_TIME_MIN elapsed, and user still hs bike, remind him per this interval
+final int REMIND_USER_RETURN_BIKE_INTERVAL_MIN = 2;
+
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
   @override
@@ -86,11 +95,23 @@ class _CheckoutBikeState extends State<CheckoutBike> {
                 thisRide.docID, thisBike.bikeID);
 
             // schedule task
-            await Workmanager().initialize(callbackDispatcher);
-            print('Scheduling task');
-            await Workmanager().registerPeriodicTask(
+            await Workmanager()
+                .initialize(callbackDispatcher, isInDebugMode: true);
+            await Workmanager().registerOneOffTask(
                 'eightHourCheck_${thisRide.docID}', 'eightHourCheck',
-                frequency: Duration(minutes: 1));
+                initialDelay: Duration(minutes: ALLOWED_RIDE_TIME_MIN),
+                inputData: {
+                  "rideID": thisRide.docID,
+                  "user": thisRide.user.email,
+                  "bikeID": thisRide.bike.bikeID,
+                  "checkoutTime_epoch_ms":
+                      thisRide.checkoutTime.millisecondsSinceEpoch,
+                  "ALLOWED_RIDE_TIME_MIN": ALLOWED_RIDE_TIME_MIN,
+                  "ACCOUNT_LOCKOUT_THRESHOLD_MIN":
+                      ACCOUNT_LOCKOUT_THRESHOLD_MIN,
+                  "REMIND_USER_RETURN_BIKE_INTERVAL_MIN":
+                      REMIND_USER_RETURN_BIKE_INTERVAL_MIN
+                });
 
             // show the combination
             genericDialog(

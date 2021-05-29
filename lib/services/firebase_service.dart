@@ -124,4 +124,24 @@ class FirebaseService {
       return false;
     });
   }
+
+  Future<dynamic> getDocumentFromCollection(String collection, String docId) {
+    return _firebaseDB
+        .collection(collection)
+        .doc(docId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      print("Checking if doc id $docId is in DB in collection $collection..");
+      if (documentSnapshot.exists) {
+        print("Doc id $docId FOUND in DB in collection $collection..");
+        return documentSnapshot.data();
+      } else {
+        print("Doc id $docId NOT in DB in collection $collection..");
+        return null;
+      }
+    }).catchError((error) {
+      print("Failed to get doc id $docId with erro: $error");
+      return null;
+    });
+  }
 }

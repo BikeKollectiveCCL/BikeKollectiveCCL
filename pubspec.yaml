@@ -35,6 +35,9 @@ dependencies:
   passwordfield: ^0.0.82
   sqflite: ^2.0.0
   workmanager: ^0.4.0
+  flutter_local_notifications: ^6.0.0
+  flutter_native_timezone: ^1.1.0
+
 
 
   # The following adds the Cupertino Icons font to your application.

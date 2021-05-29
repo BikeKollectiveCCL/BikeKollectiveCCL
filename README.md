@@ -67,3 +67,7 @@
 1. See authenticated users [here](https://console.firebase.google.com/project/bikekollective-e87b3/authentication/users)
 2. Enable Maps API [here](https://console.cloud.google.com/google/maps-apis/overview?authuser=0&folder=&organizationId=&project=bikekollective-e87b3) and get MAPS_API_KEY if needed
 3. Helpful [Firebase Authentication](https://firebase.flutter.dev/docs/auth/usage/) and [Cloud Firestore](https://firebase.flutter.dev/docs/firestore/usage/) links
+
+
+## Tips
+1. If notifications are not showing up, clean Flutter project and wipe data in emulator via Android AVD and relaunch app
