@@ -15,10 +15,6 @@ class LocalNotification {
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  // static Future<void> onNotificationSelect(String payload) async {
-  //   print(payload);
-  // }
-
   static remindToReturnBike() async {
     var android = AndroidNotificationDetails("channel-id-remindToReturnBike",
         "remind-user-notification", "one-time-notifcation",
@@ -29,7 +25,7 @@ class LocalNotification {
     await _flutterLocalNotificationsPlugin.show(
         1,
         "Bike Kollective reminds reminder to return bike!",
-        "Only 24 hrs after initial bike checkout before account gets locked indefinitely.",
+        "- Only 24 hrs after initial bike checkout before account gets locked indefinitely.",
         platform,
         payload: "PAYLOAD GOES HERE");
   }
@@ -48,7 +44,7 @@ class LocalNotification {
     await _flutterLocalNotificationsPlugin.show(
         2,
         "Bike Kollective user account locked.",
-        "Bike checked out for mroe than 24 hours and not returned in time. Locking account indefinitely.",
+        "- Bike checked out for more than 24 hours and not returned in time. Locking account indefinitely.",
         platform,
         payload: "This is the payload");
   }

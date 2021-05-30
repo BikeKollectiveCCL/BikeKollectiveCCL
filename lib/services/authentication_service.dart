@@ -35,6 +35,15 @@ class AuthenticationService {
       if (inDb) {
         print("User already in Firestore db... updating logged_in");
         firebaseService.updateAppUserLoggedInStatus(true, appUser.authId);
+        // check if user has been locked out by app
+        var userDoc = await firebaseService.getDocumentFromCollection(
+            "users", appUser.authId);
+        if (userDoc["locked_out"] == true) {
+          final firebaseInstance = FirebaseService(FirebaseFirestore.instance);
+          firebaseInstance.updateAppUserLoggedInStatus(false, appUser.authId);
+          //await _firebaseAuth.signOut();
+          return formatMsg(false, "User account has been suspended");
+        }
       } else {
         appUser.upload();
       }

@@ -1,6 +1,8 @@
+import 'package:bikekollective/services/authentication_service.dart';
 import 'package:bikekollective/services/firebase_service.dart';
 import 'package:bikekollective/services/local_notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
@@ -10,12 +12,15 @@ const eightHourCheck = 'eightHourCheck';
 const cancelAllNotifications = 'cancelAllNotifications';
 const cancellAllBgTasks = 'cancellAllBgTasks';
 const intervalCheck = 'intervalCheck';
+const cancelBgTaskByName = "cancelBgTaskByName";
 
 void callbackDispatcher() async {
   Workmanager().executeTask((task, inputData) async {
     await Firebase.initializeApp();
     FirebaseService firebaseService =
         FirebaseService(FirebaseFirestore.instance);
+    await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+    LocalNotification.initializer();
     var payload = inputData;
     switch (task) {
       case eightHourCheck:
@@ -24,8 +29,7 @@ void callbackDispatcher() async {
           print("Seing out notification from eightHourCheck");
           print(
               '${payload["ALLOWED_RIDE_TIME_MIN"]} minutes have elapsed since bike id ${payload["bikeID"]} checked out');
-          await Workmanager()
-              .initialize(callbackDispatcher, isInDebugMode: true);
+
           // get ride document checkout
 
           var doc = await firebaseService.getDocumentFromCollection(
@@ -57,8 +61,8 @@ void callbackDispatcher() async {
         break;
       case intervalCheck:
         {
-          print('Checking periodically to see if a bike has been returned');
-          print("Sening out notification from intervalCheck");
+          print(
+              'intervalCheck: Job Checking periodically to see if a bike has been returned');
 
           // get ride document checkout
           var doc = await firebaseService.getDocumentFromCollection(
@@ -69,37 +73,62 @@ void callbackDispatcher() async {
             if (!timeToLockUserOut(payload["checkoutTime_epoch_ms"],
                 payload["ACCOUNT_LOCKOUT_THRESHOLD_MIN"])) {
               // if not, send remidner notification
-              LocalNotification.initializer();
-              LocalNotification.remindToReturnBike();
+              print(
+                  "intervalCheck: Sending out remindToReturnBike notification");
+              await LocalNotification.remindToReturnBike();
             } else {
-              // stop interval job and lock out user
-              // TODO FIXME
-              // send final notficiation that account was lcoked
+              // update locked_out attribute in Firebase
+              print(
+                  "intervalCheck: Locking out user. Setting Firebase attribute locked_out in users collection");
+              firebaseService.setLockoutAttributeInUser(payload["userID"]);
+              // send final notficiation that account was locked
+              print(
+                  "intervalCheck: Sending out lockOutUserNotifcation notification");
+              await LocalNotification.lockOutUserNotifcation();
+
+              // log out user
+              print("intervalCheck: Signout out user from FirebaseAuth");
+              AuthenticationService authenticationService =
+                  AuthenticationService(FirebaseAuth.instance);
+              //await authenticationService.signOut();
+
               // create mew job handler that kills speicifc job
-              print("Cancelling job intervalCheck_${payload['rideID']}");
-              Workmanager()
-                  .cancelByUniqueName("intervalCheck_${payload['rideID']}");
+              print(
+                  "intervalCheck: Starting new job (cancelBgTaskByName) to cancel curent job intervalCheck_${payload['rideID']}");
             }
+            // stop interval job and lock out user
+            await Workmanager().registerOneOffTask(
+                "cancelBgTaskByName_${payload["rideID"]}", "cancelBgTaskByName",
+                inputData: payload);
+          } else {
+            // someting has gone horribly wrong if we get here
+            print("intervalCheck: Firebase doc not found");
           }
-          // someting has gone horibbly wrong if we get here
-          print("Firebase doc not found");
+        }
+        break;
+      case cancelBgTaskByName:
+        {
+          print(
+              "cancelBgTaskByName: Cancelling job intervalCheck_${payload['rideID']}");
+          await Workmanager()
+              .cancelByUniqueName("intervalCheck_${payload['rideID']}");
         }
         break;
       case cancelAllNotifications:
         {
-          print("Cancelling all notifcations");
+          print("cancelAllNotifications: Cancelling all notifcations");
           LocalNotification.initializer();
           await LocalNotification.cancelAllNotifications();
         }
         break;
       case cancellAllBgTasks:
         {
-          print("Cancelling all Background Tasks");
+          print("cancellAllBgTasks: Cancelling all Background Tasks");
           await Workmanager().cancelAll();
         }
         break;
       default:
-        print("Inside executeTask..No task matching");
+        print("default (job): Inside executeTask..No task matching");
         break;
     }
     return Future.value(true);

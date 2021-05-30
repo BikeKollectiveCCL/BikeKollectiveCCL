@@ -16,13 +16,13 @@ import '../helpers/tasks.dart';
 import '../widgets/text_widgets.dart';
 
 // after this # of min elapsed, app will start bugging user
-final int ALLOWED_RIDE_TIME_MIN = 1;
+final int ALLOWED_RIDE_TIME_MIN = 8 * 60;
 
 // after this # of min elapsed, account will get locked out indefintely
-final int ACCOUNT_LOCKOUT_THRESHOLD_MIN = 5;
+final int ACCOUNT_LOCKOUT_THRESHOLD_MIN = 24 * 60;
 
 // after ALLOWED_RIDE_TIME_MIN elapsed, and user still hs bike, remind him per this interval
-final int REMIND_USER_RETURN_BIKE_INTERVAL_MIN = 2;
+final int REMIND_USER_RETURN_BIKE_INTERVAL_MIN = 60;
 
 class CheckoutBike extends StatefulWidget {
   static const routeName = 'checkoutBike';
@@ -43,7 +43,8 @@ class _CheckoutBikeState extends State<CheckoutBike> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             paddedCenteredText('Tap the button below to check out the bike'),
-            paddedCenteredText('You are checking out a ${thisBike.bikeType} bike'),
+            paddedCenteredText(
+                'You are checking out a ${thisBike.bikeType} bike'),
             paddedCenteredText('Please return the bike within 8 hours'),
             checkoutButton(thisBike),
           ],
@@ -98,20 +99,22 @@ class _CheckoutBikeState extends State<CheckoutBike> {
             await Workmanager()
                 .initialize(callbackDispatcher, isInDebugMode: true);
             await Workmanager().registerOneOffTask(
-                'eightHourCheck_${thisRide.docID}', 'eightHourCheck',
-                initialDelay: Duration(minutes: ALLOWED_RIDE_TIME_MIN),
-                inputData: {
-                  "rideID": thisRide.docID,
-                  "user": thisRide.user.email,
-                  "bikeID": thisRide.bike.bikeID,
-                  "checkoutTime_epoch_ms":
-                      thisRide.checkoutTime.millisecondsSinceEpoch,
-                  "ALLOWED_RIDE_TIME_MIN": ALLOWED_RIDE_TIME_MIN,
-                  "ACCOUNT_LOCKOUT_THRESHOLD_MIN":
-                      ACCOUNT_LOCKOUT_THRESHOLD_MIN,
-                  "REMIND_USER_RETURN_BIKE_INTERVAL_MIN":
-                      REMIND_USER_RETURN_BIKE_INTERVAL_MIN
-                });
+              'eightHourCheck_${thisRide.docID}',
+              'eightHourCheck',
+              initialDelay: Duration(minutes: ALLOWED_RIDE_TIME_MIN),
+              inputData: {
+                "rideID": thisRide.docID,
+                "user": thisRide.user.email,
+                "userID": thisUser.uid,
+                "bikeID": thisRide.bike.bikeID,
+                "checkoutTime_epoch_ms":
+                    thisRide.checkoutTime.millisecondsSinceEpoch,
+                "ALLOWED_RIDE_TIME_MIN": ALLOWED_RIDE_TIME_MIN,
+                "ACCOUNT_LOCKOUT_THRESHOLD_MIN": ACCOUNT_LOCKOUT_THRESHOLD_MIN,
+                "REMIND_USER_RETURN_BIKE_INTERVAL_MIN":
+                    REMIND_USER_RETURN_BIKE_INTERVAL_MIN
+              },
+            );
 
             // show the combination
             genericDialog(
