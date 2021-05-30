@@ -29,7 +29,6 @@ class _ReturnBikeState extends State<ReturnBike> {
   LocationData currentLocation;
   @override
   Widget build(BuildContext context) {
-    // final backgroundService = context.read()<Workmanager>();
     final firebaseUser = context.watch<User>();
     var rideState = context.read<CurrentRideState>();
     final Ride currentRide = rideState.currentRide;
@@ -46,10 +45,11 @@ class _ReturnBikeState extends State<ReturnBike> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                 paddedCenteredText(
-                    'Complete the form below to return the ${bikeToReturn.bikeType} bike'),
+                    'Complete the form below to return ${bikeToReturn.bikeName}'),
                 paddedCenteredText('We hope you enjoyed the ride!'),
                 paddedCenteredText(
-                    'You can rate the bike, update tags, and let us know about any issues'),
+                    'You can give the bike, update tags, and let us know about any issues'),
+                Text('Return bike placeholder'),
                 returnForm(currentRide, rideState, bikeToReturn),
               ]))));
     } else {
@@ -102,7 +102,7 @@ class _ReturnBikeState extends State<ReturnBike> {
                 onPressed: () async {
                   // stop all notifications
                   await Workmanager()
-                      .initialize(callbackDispatcher, isInDebugMode: true);
+                      .initialize(callbackDispatcher, isInDebugMode: false);
                   await Workmanager().registerOneOffTask(
                       "cancelAllNotifications", "cancelAllNotifications");
                   currentLocation = await getLocation();

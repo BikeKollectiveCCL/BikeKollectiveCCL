@@ -62,6 +62,10 @@ class _BikeKollectiveState extends State<BikeKollective> {
           StreamProvider(
               initialData: null,
               create: (context) =>
+                  context.read<FirebaseService>().getAppUserCollectionStream()),
+          StreamProvider(
+              initialData: null,
+              create: (context) =>
                   context.read<AuthenticationService>().authStateChanges),
         ],
         child: MaterialApp(

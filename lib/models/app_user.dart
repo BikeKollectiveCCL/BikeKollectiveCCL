@@ -8,12 +8,14 @@ class AppUser extends ChangeNotifier {
   bool loggedIn;
   bool signedWaiver;
   bool bikeCheckedOut;
+  bool lockedOut;
 
-  AppUser() {
-    this._authId = null;
+  AppUser({authId}) {
+    this._authId = authId != null ? authId : null;
     this.loggedIn = false;
     this.signedWaiver = false;
     this.bikeCheckedOut = false;
+    this.lockedOut = false;
   }
 
   AppUser.fromMap(Map appUserMap) {
@@ -21,12 +23,14 @@ class AppUser extends ChangeNotifier {
     this.loggedIn = appUserMap['logged_in'];
     this.signedWaiver = appUserMap['signed_waiver'];
     this.bikeCheckedOut = appUserMap['logged_in'];
+    this.lockedOut = appUserMap['locked_out'];
   }
 
   Map<String, dynamic> toJson() => {
         "logged_in": this.loggedIn,
         "signed_waiver": this.signedWaiver,
-        "biked_checked_out": this.bikeCheckedOut
+        "biked_checked_out": this.bikeCheckedOut,
+        "locked_out": this.lockedOut
       };
 
   void upload() async {
@@ -52,6 +56,7 @@ class AppUser extends ChangeNotifier {
       this.loggedIn = user["logged_in"];
       this.signedWaiver = user["signed_waiver"];
       this.bikeCheckedOut = user["bike_checked_out"];
+      this.lockedOut = user["locked_out"];
     }
   }
 
@@ -93,5 +98,11 @@ class AppUser extends ChangeNotifier {
 
   set setBikeCheckedOut(bool tmp) {
     this.loggedIn = tmp;
+  }
+
+  bool get isLockedOut => this.lockedOut;
+
+  set setIsLockedOut(bool tmp) {
+    this.lockedOut = tmp;
   }
 }

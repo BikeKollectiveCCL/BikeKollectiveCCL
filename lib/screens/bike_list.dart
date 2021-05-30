@@ -1,3 +1,6 @@
+import 'package:bikekollective/models/app_user.dart';
+import 'package:bikekollective/services/authentication_service.dart';
+import 'package:bikekollective/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +33,23 @@ class _BikeListState extends State<BikeList> {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
-    if (firebaseUser != null) {
+    final currUser = context.watch<AppUser>();
+    final appUsersSnapshots = context.watch<QuerySnapshot>();
+
+    if (firebaseUser != null &&
+        appUsersSnapshots != null &&
+        appUsersSnapshots.docs != null &&
+        appUsersSnapshots.docs.length > 0) {
+      currUser.setAuthId = firebaseUser.uid;
+      if (currUser.isLockedOut == true) {
+        final firebaseInstance = FirebaseService(FirebaseFirestore.instance);
+        firebaseInstance.updateAppUserLoggedInStatus(false, currUser.authId);
+        context.read<AuthenticationService>().signOut();
+      }
+      currUser.loadInfo(appUsersSnapshots.docs);
+    }
+
+    if (firebaseUser != null && currUser.isLockedOut != true) {
       return Scaffold(
         appBar: _appBar(),
         body: bikeList(),

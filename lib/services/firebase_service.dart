@@ -8,6 +8,9 @@ class FirebaseService {
   Stream<QuerySnapshot> getAppUserCollectionStream() =>
       _firebaseDB.collection('users').snapshots();
 
+  Stream<DocumentSnapshot> documentStream(collection, docID) =>
+      _firebaseDB.collection(collection).doc(docID).snapshots();
+
   Future<void> updateAppUserLoggedInStatus(bool tmp, String authId) {
     // only update if document/user exists in DB
     return _firebaseDB
@@ -143,5 +146,14 @@ class FirebaseService {
       print("Failed to get doc id $docId with erro: $error");
       return null;
     });
+  }
+
+  Future<void> setLockoutAttributeInUser(String docId) {
+    return _firebaseDB
+        .collection("users")
+        .doc(docId)
+        .update({'locked_out': true})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
   }
 }
