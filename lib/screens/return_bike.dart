@@ -102,7 +102,7 @@ class _ReturnBikeState extends State<ReturnBike> {
                 onPressed: () async {
                   // stop all notifications
                   await Workmanager()
-                      .initialize(callbackDispatcher, isInDebugMode: true);
+                      .initialize(callbackDispatcher, isInDebugMode: false);
                   await Workmanager().registerOneOffTask(
                       "cancelAllNotifications", "cancelAllNotifications");
                   currentLocation = await getLocation();

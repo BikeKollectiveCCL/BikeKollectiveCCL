@@ -97,7 +97,7 @@ class _CheckoutBikeState extends State<CheckoutBike> {
 
             // schedule task
             await Workmanager()
-                .initialize(callbackDispatcher, isInDebugMode: true);
+                .initialize(callbackDispatcher, isInDebugMode: false);
             await Workmanager().registerOneOffTask(
               'eightHourCheck_${thisRide.docID}',
               'eightHourCheck',

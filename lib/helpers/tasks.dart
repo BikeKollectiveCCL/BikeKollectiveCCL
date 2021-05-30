@@ -19,7 +19,7 @@ void callbackDispatcher() async {
     await Firebase.initializeApp();
     FirebaseService firebaseService =
         FirebaseService(FirebaseFirestore.instance);
-    await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+    await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
     LocalNotification.initializer();
     var payload = inputData;
     switch (task) {
@@ -95,11 +95,12 @@ void callbackDispatcher() async {
               // create mew job handler that kills speicifc job
               print(
                   "intervalCheck: Starting new job (cancelBgTaskByName) to cancel curent job intervalCheck_${payload['rideID']}");
+              // stop interval job and lock out user
+              await Workmanager().registerOneOffTask(
+                  "cancelBgTaskByName_${payload["rideID"]}",
+                  "cancelBgTaskByName",
+                  inputData: payload);
             }
-            // stop interval job and lock out user
-            await Workmanager().registerOneOffTask(
-                "cancelBgTaskByName_${payload["rideID"]}", "cancelBgTaskByName",
-                inputData: payload);
           } else {
             // someting has gone horribly wrong if we get here
             print("intervalCheck: Firebase doc not found");
